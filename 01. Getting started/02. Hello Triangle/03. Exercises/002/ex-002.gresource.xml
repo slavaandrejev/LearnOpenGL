@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<gresources>
+    <gresource prefix="/">
+        <file>program.vs.glsl</file>
+        <file>program.fs.glsl</file>
+        <file>ex-002-window.ui</file>
+    </gresource>
+</gresources>
