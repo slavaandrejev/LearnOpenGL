@@ -18,7 +18,7 @@ bool OpenGLRender::on_render(const Glib::RefPtr<Gdk::GLContext>& context) {
     glClearBufferfv(GL_COLOR, 0, color);
 
     renderingProgram->use();
-    renderingProgram->set("offset", 0.5);
+    renderingProgram->set("offset", 0.5f);
     glBindVertexArray(VAO);
     glDrawArrays(GL_TRIANGLES, 0, 3);
 

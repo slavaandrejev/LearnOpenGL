@@ -53,6 +53,9 @@ public:
     void set(const std::string &name, float v) {
         glUniform1f(glGetUniformLocation(id, name.c_str()), v);
     }
+    void set(const std::string &name, GLint v) {
+        glUniform1i(glGetUniformLocation(id, name.c_str()), v);
+    }
 
 private:
     GLuint id = glCreateProgram();
