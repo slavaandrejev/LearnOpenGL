@@ -19,8 +19,7 @@ bool OpenGLRender::on_render(const Glib::RefPtr<Gdk::GLContext>& context) {
 
     renderingProgram->use();
     float greenValue = std::sin(curTime) / 2.0f + 0.5f;
-    int vertexColorLocation = glGetUniformLocation(renderingProgram->Id(), "ourColor");
-    glUniform4f(vertexColorLocation, 0.0f, greenValue, 0.0f, 1.0f);
+    renderingProgram->set("ourColor", 0.0f, greenValue, 0.0f, 1.0f);
 
     glBindVertexArray(VAO);
     glDrawArrays(GL_TRIANGLES, 0, 3);

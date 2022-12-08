@@ -70,11 +70,14 @@ public:
 
     auto Id() const { return id; }
     void use() { glUseProgram(id); }
-    void set(const std::string &name, float v) {
-        glUniform1f(glGetUniformLocation(id, name.c_str()), v);
+    void set(const char *name, float v) {
+        glUniform1f(glGetUniformLocation(id, name), v);
     }
-    void set(const std::string &name, GLint v) {
-        glUniform1i(glGetUniformLocation(id, name.c_str()), v);
+    void set(const char *name, GLint v) {
+        glUniform1i(glGetUniformLocation(id, name), v);
+    }
+    void set(const char *name, float v0, float v1, float v2, float v3) {
+        glUniform4f(glGetUniformLocation(id, name), v0, v1, v2, v3);
     }
 
 private:
