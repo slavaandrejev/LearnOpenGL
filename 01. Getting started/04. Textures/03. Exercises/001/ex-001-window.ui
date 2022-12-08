@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <interface>
     <object class="GtkApplicationWindow" id="mainWindow">
-        <property name="title" translatable="yes">Learn OpenGL Textures Ex 01</property>
+        <property name="title" translatable="yes">Learn OpenGL Textures, different wrapping exercise</property>
         <property name="default-width">800</property>
         <property name="default-height">600</property>
         <property name="hide-on-close">True</property>
