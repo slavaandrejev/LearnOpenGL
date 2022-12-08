@@ -42,6 +42,7 @@ void OpenGLRender::on_realize() {
     glCreateVertexArrays(1, &VAO);
     glCreateBuffers(1, &VBO);
 
+    // Named buffer allows to configure VAO without binding VBO to the context.
     glNamedBufferStorage(VBO, sizeof(vertices), &vertices[0], 0);
     glVertexArrayVertexBuffer(VAO, 0, VBO, 0, 3 * sizeof(float));
     glVertexArrayAttribFormat(VAO, 0, 3, GL_FLOAT, GL_FALSE, 0);
