@@ -17,10 +17,8 @@ bool OpenGLRender::on_render(const Glib::RefPtr<Gdk::GLContext>& context) {
     const GLfloat color[] = {0.2f, 0.3f, 0.3f, 1.0f};
     glClearBufferfv(GL_COLOR, 0, color);
 
-    glActiveTexture(GL_TEXTURE0);
-    glBindTexture(GL_TEXTURE_2D, texture[0]);
-    glActiveTexture(GL_TEXTURE1);
-    glBindTexture(GL_TEXTURE_2D, texture[1]);
+    glBindTextureUnit(0, texture[0]);
+    glBindTextureUnit(1, texture[1]);
     renderingProgram->use();
     glBindVertexArray(VAO);
     glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
@@ -32,44 +30,44 @@ void OpenGLRender::on_realize() {
     Gtk::GLArea::on_realize();
     make_current();
 
-    glGenTextures(2, &texture[0]);
+    glCreateTextures(GL_TEXTURE_2D, 2, &texture[0]);
 
     auto contImg = Gdk::Pixbuf::create_from_resource("/container.jpg");
-    glBindTexture(GL_TEXTURE_2D, texture[0]);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-    glTexImage2D(
-        GL_TEXTURE_2D
+    glTextureParameteri(texture[0], GL_TEXTURE_WRAP_S, GL_REPEAT);
+    glTextureParameteri(texture[0], GL_TEXTURE_WRAP_T, GL_REPEAT);
+    glTextureParameteri(texture[0], GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+    glTextureParameteri(texture[0], GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    glTextureStorage2D(texture[0], 1, GL_RGB8, contImg->get_width(), contImg->get_height());
+    glTextureSubImage2D(
+        texture[0]
       , 0
-      , GL_RGB
+      , 0
+      , 0
       , contImg->get_width()
       , contImg->get_height()
-      , 0
       , GL_RGB
       , GL_UNSIGNED_BYTE
       , contImg->get_pixels());
-    glGenerateMipmap(GL_TEXTURE_2D);
+    glGenerateTextureMipmap(texture[0]);
     contImg.reset();
 
     auto faceImg = Gdk::Pixbuf::create_from_resource("/awesomeface.png");
-    glBindTexture(GL_TEXTURE_2D, texture[1]);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-    glTexImage2D(
-        GL_TEXTURE_2D
+    glTextureParameteri(texture[1], GL_TEXTURE_WRAP_S, GL_REPEAT);
+    glTextureParameteri(texture[1], GL_TEXTURE_WRAP_T, GL_REPEAT);
+    glTextureParameteri(texture[1], GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+    glTextureParameteri(texture[1], GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    glTextureStorage2D(texture[1], 1, GL_RGBA8, faceImg->get_width(), faceImg->get_height());
+    glTextureSubImage2D(
+        texture[1]
       , 0
-      , GL_RGBA
+      , 0
+      , 0
       , faceImg->get_width()
       , faceImg->get_height()
-      , 0
       , GL_RGBA
       , GL_UNSIGNED_BYTE
       , faceImg->get_pixels());
-    glGenerateMipmap(GL_TEXTURE_2D);
+    glGenerateTextureMipmap(texture[1]);
     faceImg.reset();
 
     renderingProgram = std::make_unique<Shader>(

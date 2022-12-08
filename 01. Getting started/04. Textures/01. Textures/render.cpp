@@ -34,23 +34,23 @@ void OpenGLRender::on_realize() {
         "/fs.glsl", GL_FRAGMENT_SHADER);
 
     auto contImg = Gdk::Pixbuf::create_from_resource("/container.jpg");
-    glGenTextures(1, &texture);
-    glBindTexture(GL_TEXTURE_2D, texture);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-    glTexImage2D(
-        GL_TEXTURE_2D
+    glCreateTextures(GL_TEXTURE_2D, 1, &texture);
+    glTextureParameteri(texture, GL_TEXTURE_WRAP_S, GL_REPEAT);
+    glTextureParameteri(texture, GL_TEXTURE_WRAP_T, GL_REPEAT);
+    glTextureParameteri(texture, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+    glTextureParameteri(texture, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    glTextureStorage2D(texture, 1, GL_RGB8, contImg->get_width(), contImg->get_height());
+    glTextureSubImage2D(
+        texture
       , 0
-      , GL_RGB
+      , 0
+      , 0
       , contImg->get_width()
       , contImg->get_height()
-      , 0
       , GL_RGB
       , GL_UNSIGNED_BYTE
       , contImg->get_pixels());
-    glGenerateMipmap(GL_TEXTURE_2D);
+    glGenerateTextureMipmap(texture);
     contImg.reset();
 
     float vertices[] = {
