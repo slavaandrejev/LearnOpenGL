@@ -9,6 +9,8 @@
 
 #include <boost/hana/functional/fix.hpp>
 
+#include <fmt/printf.h>
+
 class Shader {
 public:
     template <typename ...Args>
@@ -23,6 +25,15 @@ public:
             auto shader = glCreateShader(shaderType);
             glShaderSource(shader, 1, &data, nullptr);
             glCompileShader(shader);
+            auto success = 0;
+            glGetShaderiv(shader, GL_COMPILE_STATUS, &success);
+            if (0 == success) {
+                auto infoLength = 0;
+                glGetShaderiv(shader, GL_INFO_LOG_LENGTH, &infoLength);
+                auto info = std::vector<GLchar>(infoLength, 0);
+                glGetShaderInfoLog(shader, infoLength, nullptr, &info[0]);
+                fmt::print("{}\n", &info[0]);
+            }
 
             return shader;
         };
@@ -39,6 +50,15 @@ public:
 
         attachShaders(args...);
         glLinkProgram(id);
+        auto success = 0;
+        glGetProgramiv(id, GL_LINK_STATUS, &success);
+        if (0 == success) {
+            auto infoLength = 0;
+            glGetProgramiv(id, GL_INFO_LOG_LENGTH, &infoLength);
+            auto info = std::vector<GLchar>(infoLength, 0);
+            glGetProgramInfoLog(id, infoLength, nullptr, &info[0]);
+            fmt::print("{}\n", &info[0]);
+        }
         for (auto shader : shaders) {
             glDeleteShader(shader);
         }
