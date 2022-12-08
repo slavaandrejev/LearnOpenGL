@@ -17,7 +17,7 @@ bool OpenGLRender::on_render(const Glib::RefPtr<Gdk::GLContext>& context) {
     const GLfloat color[] = {0.2f, 0.3f, 0.3f, 1.0f};
     glClearBufferfv(GL_COLOR, 0, color);
 
-    glUseProgram(renderingProgram);
+    renderingProgram->use();
     glBindVertexArray(VAO[0]);
     glDrawArrays(GL_TRIANGLES, 0, 3);
     glBindVertexArray(VAO[1]);
@@ -30,7 +30,7 @@ void OpenGLRender::on_realize() {
     Gtk::GLArea::on_realize();
     make_current();
 
-    renderingProgram = CompileShaders(
+    renderingProgram = std::make_unique<Shader>(
         "/program.vs.glsl", GL_VERTEX_SHADER,
         "/program.fs.glsl", GL_FRAGMENT_SHADER);
 
@@ -62,7 +62,7 @@ void OpenGLRender::on_realize() {
 void OpenGLRender::on_unrealize() {
     glDeleteVertexArrays(2, &VAO[0]);
     glDeleteBuffers(2, &VBO[0]);
-    glDeleteProgram(renderingProgram);
+    renderingProgram.reset();
 
     Gtk::GLArea::on_unrealize();
 }

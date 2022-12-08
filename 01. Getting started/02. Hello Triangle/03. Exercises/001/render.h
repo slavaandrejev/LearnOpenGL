@@ -1,11 +1,15 @@
 #pragma once
 
+#include <memory>
+
 #include <glibmm/refptr.h>
 #include <gtkmm/builder.h>
 #include <gtkmm/glarea.h>
 
 #include <epoxy/gl.h>
 #include <epoxy/glx.h>
+
+#include <shader.h>
 
 // Two triangles next to each other.
 class OpenGLRender : public Gtk::GLArea
@@ -18,9 +22,8 @@ private:
     void on_realize() override;
     void on_unrealize() override;
 
-    GLuint CompileShaders();
+    std::unique_ptr<Shader> renderingProgram;
 
-    GLuint renderingProgram  = 0;
     GLuint VBO = 0;
     GLuint VAO = 0;
 };

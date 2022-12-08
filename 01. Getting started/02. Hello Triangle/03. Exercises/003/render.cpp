@@ -17,10 +17,10 @@ bool OpenGLRender::on_render(const Glib::RefPtr<Gdk::GLContext>& context) {
     const GLfloat color[] = {0.2f, 0.3f, 0.3f, 1.0f};
     glClearBufferfv(GL_COLOR, 0, color);
 
-    glUseProgram(renderingProgram1);
+    renderingProgram[0]->use();
     glBindVertexArray(VAO[0]);
     glDrawArrays(GL_TRIANGLES, 0, 3);
-    glUseProgram(renderingProgram2);
+    renderingProgram[1]->use();
     glBindVertexArray(VAO[1]);
     glDrawArrays(GL_TRIANGLES, 0, 3);
 
@@ -31,13 +31,17 @@ void OpenGLRender::on_realize() {
     Gtk::GLArea::on_realize();
     make_current();
 
-    renderingProgram1 = CompileShaders(
-        "/vs.glsl", GL_VERTEX_SHADER,
-        "/fs-01.glsl", GL_FRAGMENT_SHADER);
-
-    renderingProgram2 = CompileShaders(
-        "/vs.glsl", GL_VERTEX_SHADER,
-        "/fs-02.glsl", GL_FRAGMENT_SHADER);
+    renderingProgram = {
+        std::make_unique<Shader>(
+            "/vs.glsl", GL_VERTEX_SHADER
+          , "/fs-01.glsl", GL_FRAGMENT_SHADER
+          )
+      ,
+        std::make_unique<Shader>(
+            "/vs.glsl", GL_VERTEX_SHADER
+          , "/fs-02.glsl", GL_FRAGMENT_SHADER
+          )
+      };
 
     float vertices[] = {
        -0.9f, -0.9f, 0.0f,
@@ -67,8 +71,9 @@ void OpenGLRender::on_realize() {
 void OpenGLRender::on_unrealize() {
     glDeleteVertexArrays(2, &VAO[0]);
     glDeleteBuffers(2, &VBO[0]);
-    glDeleteProgram(renderingProgram1);
-    glDeleteProgram(renderingProgram2);
+    for (auto &&rp : renderingProgram) {
+        rp.reset();
+    }
 
     Gtk::GLArea::on_unrealize();
 }

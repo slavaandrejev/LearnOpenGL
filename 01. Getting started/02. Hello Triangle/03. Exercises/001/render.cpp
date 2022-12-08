@@ -17,7 +17,7 @@ bool OpenGLRender::on_render(const Glib::RefPtr<Gdk::GLContext>& context) {
     const GLfloat color[] = {0.2f, 0.3f, 0.3f, 1.0f};
     glClearBufferfv(GL_COLOR, 0, color);
 
-    glUseProgram(renderingProgram);
+    renderingProgram->use();
     glBindVertexArray(VAO);
     glDrawArrays(GL_TRIANGLES, 0, 6);
 
@@ -28,7 +28,9 @@ void OpenGLRender::on_realize() {
     Gtk::GLArea::on_realize();
     make_current();
 
-    renderingProgram = CompileShaders();
+    renderingProgram = std::make_unique<Shader>(
+        "/program.vs.glsl", GL_VERTEX_SHADER,
+        "/program.fs.glsl", GL_FRAGMENT_SHADER);
 
     float vertices[] = {
        -0.9f, -0.9f, 0.0f,
@@ -53,35 +55,7 @@ void OpenGLRender::on_realize() {
 void OpenGLRender::on_unrealize() {
     glDeleteVertexArrays(1, &VAO);
     glDeleteBuffers(1, &VBO);
-    glDeleteProgram(renderingProgram);
+    renderingProgram.reset();
 
     Gtk::GLArea::on_unrealize();
-}
-
-GLuint OpenGLRender::CompileShaders() {
-    auto compileFromResource = [](auto path, auto shaderType) -> GLuint {
-        auto bytes = Gio::Resource::lookup_data_global(path);
-        auto size = gsize{};
-        auto data = reinterpret_cast<const char*>(bytes->get_data(size));
-
-        auto shader = glCreateShader(shaderType);
-        glShaderSource(shader, 1, &data, nullptr);
-        glCompileShader(shader);
-
-        return shader;
-    };
-
-    auto vertexShader   = compileFromResource("/program.vs.glsl", GL_VERTEX_SHADER);
-    auto fragmentShader = compileFromResource("/program.fs.glsl", GL_FRAGMENT_SHADER);
-
-    auto program = glCreateProgram();
-    glAttachShader(program, vertexShader);
-    glAttachShader(program, fragmentShader);
-
-    glLinkProgram(program);
-
-    glDeleteShader(vertexShader);
-    glDeleteShader(fragmentShader);
-
-    return program;
 }

@@ -1,5 +1,8 @@
 #pragma once
 
+#include <array>
+#include <memory>
+
 #include <glibmm/refptr.h>
 #include <gtkmm/builder.h>
 #include <gtkmm/glarea.h>
@@ -9,6 +12,8 @@
 
 #include <epoxy/gl.h>
 #include <epoxy/glx.h>
+
+#include <shader.h>
 
 // Two triangles next to each other using two VAO, two VBO, and two fragment
 // shaders.
@@ -58,8 +63,7 @@ private:
         return program;
     }
 
-    GLuint renderingProgram1 = 0;
-    GLuint renderingProgram2 = 0;
+    std::array<std::unique_ptr<Shader>, 2> renderingProgram;
 
     GLuint VBO[2] = {};
     GLuint VAO[2] = {};
