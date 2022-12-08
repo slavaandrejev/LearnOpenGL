@@ -70,6 +70,9 @@ void OpenGLRender::on_realize() {
     // VBOs) when it's not directly necessary.
     glBindVertexArray(0);
 
+    // now when VAO is inactive, we can unbind the EBO
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+
     // glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 }
 
