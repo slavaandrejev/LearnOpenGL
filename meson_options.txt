@@ -1,1 +1,0 @@
-option('buildcfg', type : 'combo', choices : ['debug', 'release', 'debugoptimized'], value : 'release')
