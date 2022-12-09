@@ -2,7 +2,7 @@
 <interface>
     <requires lib="gtk" version="4.6"/>
     <object class="GtkApplicationWindow" id="mainWindow">
-        <property name="title" translatable="yes">Learn OpenGL Combined Textures, mixture uniform exercise</property>
+        <property name="title" translatable="yes">Learn OpenGL Transformations</property>
         <property name="default-width">800</property>
         <property name="default-height">600</property>
         <property name="hide-on-close">True</property>
