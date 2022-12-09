@@ -2,6 +2,7 @@ gtk_files = gnome.compile_resources(
     'glm-resources'
   , 'glm.gresource.xml'
   , c_name: 'glm'
+  , source_dir: [project_folder / 'resources']
 )
 
 executable(
