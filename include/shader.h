@@ -9,6 +9,9 @@
 
 #include <boost/hana/functional/fix.hpp>
 
+#include <glm/mat4x4.hpp>
+#include <glm/gtc/type_ptr.hpp>
+
 #include <fmt/printf.h>
 
 class Shader {
@@ -78,6 +81,9 @@ public:
     }
     void set(const char *name, float v0, float v1, float v2, float v3) {
         glUniform4f(glGetUniformLocation(id, name), v0, v1, v2, v3);
+    }
+    void set(const char *name, const glm::mat4 &m) {
+        glUniformMatrix4fv(glGetUniformLocation(id, name), 1, GL_FALSE, glm::value_ptr(m));
     }
 
 private:

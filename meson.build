@@ -118,6 +118,7 @@ gnome = import('gnome')
 
 boost_dep = dependency('boost')
 fmt_dep   = dependency('fmt', method: 'cmake')
+glm_dep   = dependency('glm', method: 'cmake')
 epoxy_dep = dependency('epoxy')
 gtk_dep   = dependency('gtkmm-4.0')
 
