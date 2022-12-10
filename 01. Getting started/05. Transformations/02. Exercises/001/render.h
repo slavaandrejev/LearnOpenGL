@@ -2,15 +2,12 @@
 
 #include <memory>
 
+#include <gdkmm/frameclock.h>
 #include <glibmm/refptr.h>
 #include <gtkmm/builder.h>
-#include <gtkmm/eventcontrollerkey.h>
 #include <gtkmm/glarea.h>
 
-#include <boost/hana/functional/fix.hpp>
-
 #include <epoxy/gl.h>
-#include <epoxy/glx.h>
 
 #include <shader.h>
 

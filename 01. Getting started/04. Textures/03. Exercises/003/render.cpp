@@ -3,7 +3,10 @@
 #include <giomm/resource.h>
 #include <glibmm/refptr.h>
 #include <gtkmm/builder.h>
+#include <gtkmm/eventcontrollerkey.h>
 #include <gtkmm/glarea.h>
+
+#include <epoxy/gl.h>
 
 #include "render.h"
 

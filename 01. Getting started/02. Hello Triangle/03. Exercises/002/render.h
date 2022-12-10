@@ -6,11 +6,7 @@
 #include <gtkmm/builder.h>
 #include <gtkmm/glarea.h>
 
-#include <boost/hana/functional/fix.hpp>
-#include <boost/hana/functional/overload.hpp>
-
 #include <epoxy/gl.h>
-#include <epoxy/glx.h>
 
 #include <shader.h>
 

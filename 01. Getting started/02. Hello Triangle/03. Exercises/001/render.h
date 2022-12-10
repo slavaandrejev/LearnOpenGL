@@ -7,7 +7,6 @@
 #include <gtkmm/glarea.h>
 
 #include <epoxy/gl.h>
-#include <epoxy/glx.h>
 
 #include <shader.h>
 

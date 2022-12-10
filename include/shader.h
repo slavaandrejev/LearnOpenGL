@@ -5,7 +5,6 @@
 #include <giomm/resource.h>
 
 #include <epoxy/gl.h>
-#include <epoxy/glx.h>
 
 #include <boost/hana/functional/fix.hpp>
 

@@ -4,7 +4,7 @@
 #include <gtkmm/builder.h>
 #include <gtkmm/glarea.h>
 
-#include <fmt/printf.h>
+#include <epoxy/gl.h>
 
 #include "render.h"
 

@@ -4,8 +4,6 @@
 #include <gtkmm/builder.h>
 #include <gtkmm/glarea.h>
 
-#include <fmt/printf.h>
-
 #include "render.h"
 
 OpenGLRender::OpenGLRender(BaseObjectType* cobject,

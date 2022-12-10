@@ -1,4 +1,8 @@
 #include <gdkmm/pixbuf.h>
+#include <giomm/resource.h>
+#include <glibmm/refptr.h>
+#include <gtkmm/builder.h>
+#include <gtkmm/glarea.h>
 
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
