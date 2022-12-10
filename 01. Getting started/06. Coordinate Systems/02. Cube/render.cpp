@@ -1,6 +1,7 @@
 #include <gdkmm/pixbuf.h>
 #include <giomm/resource.h>
 #include <glibmm/refptr.h>
+#include <gdkmm/frameclock.h>
 #include <gtkmm/builder.h>
 #include <gtkmm/glarea.h>
 
