@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<gresources>
+    <gresource prefix="/">
+        <file>vs.glsl</file>
+        <file>fs.glsl</file>
+        <file>cube-window.ui</file>
+        <file>container.jpg</file>
+        <file>awesomeface.png</file>
+    </gresource>
+</gresources>
