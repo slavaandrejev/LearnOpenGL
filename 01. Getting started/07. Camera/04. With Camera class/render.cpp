@@ -63,10 +63,6 @@ OpenGLRender::OpenGLRender(BaseObjectType* cobject,
       , { 1.5f,  0.2f,  -1.5f}
       , {-1.3f,  1.0f,  -1.5f}
       };
-
-    auto display = get_display();
-    auto seat = display->get_default_seat();
-
 }
 
 bool OpenGLRender::on_render(const Glib::RefPtr<Gdk::GLContext>& context) {
