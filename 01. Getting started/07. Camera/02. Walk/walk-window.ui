@@ -5,6 +5,7 @@
         <property name="title" translatable="yes">Learn OpenGL Camera Walk</property>
         <property name="default-width">800</property>
         <property name="default-height">600</property>
+        <property name="focus-widget">glArea</property>
         <property name="hide-on-close">True</property>
         <child>
             <object class="GtkBox" id="contentBox">
@@ -14,6 +15,7 @@
                         <property name="auto-render">True</property>
                         <property name="hexpand">True</property>
                         <property name="vexpand">True</property>
+                        <property name="focusable">True</property>
                     </object>
                 </child>
             </object>

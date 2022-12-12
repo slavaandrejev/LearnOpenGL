@@ -3,7 +3,6 @@
 #include <glibmm/refptr.h>
 #include <gtkmm/applicationwindow.h>
 #include <gtkmm/builder.h>
-#include <gtkmm/eventcontrollerkey.h>
 
 #include "render.h"
 
@@ -17,6 +16,5 @@ public:
 
 private:
     Glib::RefPtr<Gtk::Builder> refBuilder;
-    Glib::RefPtr<Gtk::EventControllerKey> keyEvents;
     OpenGLRender *glArea = nullptr;
 };
