@@ -7,6 +7,7 @@
 #include <gtkmm/eventcontrollerkey.h>
 #include <gtkmm/eventcontrollermotion.h>
 #include <gtkmm/eventcontrollerscroll.h>
+#include <gtkmm/gestureclick.h>
 #include <gtkmm/glarea.h>
 
 #include <glm/glm.hpp>
@@ -23,21 +24,18 @@ OpenGLRender::OpenGLRender(BaseObjectType* cobject,
   , keyEvents(Gtk::EventControllerKey::create())
   , mouseMoveEvents(Gtk::EventControllerMotion::create())
   , scrollEvents(Gtk::EventControllerScroll::create())
+  , clickEvents(Gtk::GestureClick::create())
 {
     add_controller(keyEvents);
     keyEvents->signal_key_pressed().connect(sigc::mem_fun(*this, &OpenGLRender::on_key_pressed), true);
     keyEvents->signal_key_released().connect(sigc::mem_fun(*this, &OpenGLRender::on_key_released), true);
 
     add_controller(mouseMoveEvents);
-    mouseMoveEvents->signal_enter().connect([&](double x, double y) {
-        camera.OnPointerEnter(x, y);
-    });
     mouseMoveEvents->signal_motion().connect([&](double x, double y) {
-        camera.OnPointerMotion(x, y);
-        queue_draw();
-    });
-    mouseMoveEvents->signal_leave().connect([&]() {
-        camera.OnPointerLeave();
+        if (mouseGrabbed) {
+            camera.OnPointerMotion(x, y);
+            queue_draw();
+        }
     });
 
     add_controller(scrollEvents);
@@ -48,6 +46,16 @@ OpenGLRender::OpenGLRender(BaseObjectType* cobject,
         return true;
     }, true);
     scrollEvents->set_flags(Gtk::EventControllerScroll::Flags::VERTICAL);
+
+    add_controller(clickEvents);
+    clickEvents->signal_pressed().connect([&](int n, double x, double y) {
+        camera.OnPointerEnter(x, y);
+        mouseGrabbed = true;
+    });
+    clickEvents->signal_released().connect([&](int n, double x, double y) {
+        camera.OnPointerLeave();
+        mouseGrabbed = false;
+    });
 
     set_has_depth_buffer();
 

@@ -9,6 +9,7 @@
 #include <gtkmm/eventcontrollerkey.h>
 #include <gtkmm/eventcontrollermotion.h>
 #include <gtkmm/eventcontrollerscroll.h>
+#include <gtkmm/gestureclick.h>
 #include <gtkmm/glarea.h>
 
 #include <epoxy/gl.h>
@@ -34,6 +35,7 @@ private:
 
     Glib::RefPtr<Gtk::EventControllerMotion> mouseMoveEvents;
     Glib::RefPtr<Gtk::EventControllerScroll> scrollEvents;
+    Glib::RefPtr<Gtk::GestureClick> clickEvents;
 
     bool timer_event(const Glib::RefPtr<Gdk::FrameClock>&);
 
@@ -45,6 +47,7 @@ private:
 
     std::vector<glm::vec3> cubePositions;
 
+    bool mouseGrabbed = false;
     Camera camera;
 
     gint64 startTime = -1;
