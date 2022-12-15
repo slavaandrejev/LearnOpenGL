@@ -74,7 +74,7 @@ public:
         if (-89.0f > pitch) {
             pitch = -89.0f;
         }
-        fronDir = glm::normalize(glm::vec3{
+        frontDir = glm::normalize(glm::vec3{
             std::cos(glm::radians(yaw)) * std::cos(glm::radians(pitch))
           , std::sin(glm::radians(pitch))
           , std::sin(glm::radians(yaw)) * std::cos(glm::radians(pitch))
@@ -99,7 +99,7 @@ public:
     }
 
     auto GetViewMatrix() const {
-        return glm::lookAt(pos, pos + fronDir, upDir);
+        return glm::lookAt(pos, pos + frontDir, upDir);
     }
 
     auto GetZoom() const {
@@ -121,16 +121,16 @@ private:
 
     void UpdateCameraMoveDir() {
         speedDir =
-            float(moveDirs.forward) * fronDir
-          - float(moveDirs.back) * fronDir
-          + float(moveDirs.right) * glm::normalize(glm::cross(fronDir, upDir))
-          - float(moveDirs.left) * glm::normalize(glm::cross(fronDir, upDir));
+            float(moveDirs.forward) * frontDir
+          - float(moveDirs.back) * frontDir
+          + float(moveDirs.right) * glm::normalize(glm::cross(frontDir, upDir))
+          - float(moveDirs.left) * glm::normalize(glm::cross(frontDir, upDir));
     }
 
     float zoom = 45.0f;
-    glm::vec3 pos     = glm::vec3(0.0f, 0.0f,  3.0f);
-    glm::vec3 fronDir = glm::vec3(0.0f, 0.0f, -1.0f);
-    glm::vec3 upDir   = glm::vec3(0.0f, 1.0f,  0.0f);
+    glm::vec3 pos      = glm::vec3(0.0f, 0.0f,  3.0f);
+    glm::vec3 frontDir = glm::vec3(0.0f, 0.0f, -1.0f);
+    glm::vec3 upDir    = glm::vec3(0.0f, 1.0f,  0.0f);
 
     float speed = 0.05f;
     glm::vec3 speedDir = glm::vec3(0.0f, 0.0f, 0.0f);
