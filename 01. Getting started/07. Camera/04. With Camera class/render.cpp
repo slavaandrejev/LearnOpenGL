@@ -233,12 +233,17 @@ void OpenGLRender::on_unrealize() {
 bool OpenGLRender::on_key_pressed(guint keyval, guint keycode, Gdk::ModifierType state) {
     auto processed = true;
     switch (keyval) {
-        case GDK_KEY_w:         { camera.StartForward(); break; }
-        case GDK_KEY_s:         { camera.StartBack(); break; }
-        case GDK_KEY_a:         { camera.StartLeft(); break; }
-        case GDK_KEY_d:         { camera.StartRight(); break; }
+        case GDK_KEY_w:
+        case GDK_KEY_W:         { camera.StartForward(); break; }
+        case GDK_KEY_s:
+        case GDK_KEY_S:         { camera.StartBack(); break; }
+        case GDK_KEY_a:
+        case GDK_KEY_A:         { camera.StartLeft(); break; }
+        case GDK_KEY_d:
+        case GDK_KEY_D:         { camera.StartRight(); break; }
         case GDK_KEY_space:     { camera.StartUp(); break; }
         case GDK_KEY_Control_L: { camera.StartDown(); break; }
+        case GDK_KEY_Shift_L:   { camera.HiSpeed(); break; }
         default: { processed = false; break; }
     }
 
@@ -247,12 +252,17 @@ bool OpenGLRender::on_key_pressed(guint keyval, guint keycode, Gdk::ModifierType
 
 void OpenGLRender::on_key_released(guint keyval, guint keycode, Gdk::ModifierType state) {
     switch (keyval) {
-        case GDK_KEY_w:         { camera.StopForward(); break; }
-        case GDK_KEY_s:         { camera.StopBack(); break; }
-        case GDK_KEY_a:         { camera.StopLeft(); break; }
-        case GDK_KEY_d:         { camera.StopRight(); break; }
+        case GDK_KEY_w:
+        case GDK_KEY_W:         { camera.StopForward(); break; }
+        case GDK_KEY_s:
+        case GDK_KEY_S:         { camera.StopBack(); break; }
+        case GDK_KEY_a:
+        case GDK_KEY_A:         { camera.StopLeft(); break; }
+        case GDK_KEY_d:
+        case GDK_KEY_D:         { camera.StopRight(); break; }
         case GDK_KEY_space:     { camera.StopUp(); break; }
         case GDK_KEY_Control_L: { camera.StopDown(); break; }
+        case GDK_KEY_Shift_L:   { camera.LowSpeed(); break; }
     }
 }
 

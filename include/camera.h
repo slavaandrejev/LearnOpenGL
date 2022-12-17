@@ -89,6 +89,14 @@ public:
         UpdateCameraMoveDir();
     }
 
+    void LowSpeed() {
+        speed = loSpeed;
+    }
+
+    void HiSpeed() {
+        speed = hiSpeed;
+    }
+
     void TimeTick(float deltaTime) {
         if (moveDirs.IsMoving()) {
             pos += deltaTime * speed * speedDir;
@@ -182,7 +190,9 @@ private:
     glm::vec3 e0;
     glm::vec3 e1;
 
-    float speed = 0.05f;
+    static constexpr float loSpeed = 0.05f;
+    static constexpr float hiSpeed = 4 * loSpeed;
+    float speed = loSpeed;
     glm::vec3 speedDir = glm::vec3(0.0f, 0.0f, 0.0f);
 
     static constexpr float mouseSensitivity = 0.1f;
