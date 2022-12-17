@@ -10,7 +10,15 @@
 
 class Camera {
 public:
-    Camera() {
+    Camera(
+        const glm::vec3 &position = {0.0f, 0.0f, 3.0f}
+      , const glm::vec3 &up = {0.0f, 1.0f, 0.0f}
+      , const glm::vec3 &front = {0.0f, 0.0f, -1.0f}
+      )
+      : pos(position)
+      , frontDir(front)
+      , upDir(up)
+    {
         frontDir = glm::normalize(frontDir);
         upDir = glm::normalize(upDir);
 
@@ -137,9 +145,9 @@ private:
     }
 
     float zoom = 45.0f;
-    glm::vec3 pos      = glm::vec3(0.0f, 0.0f,  3.0f);
-    glm::vec3 frontDir = glm::vec3(0.0f, 0.0f, -1.0f);
-    glm::vec3 upDir    = glm::vec3(0.0f, 1.0f,  0.0f);
+    glm::vec3 pos;
+    glm::vec3 frontDir;
+    glm::vec3 upDir;
 
     glm::vec3 e0;
     glm::vec3 e1;
