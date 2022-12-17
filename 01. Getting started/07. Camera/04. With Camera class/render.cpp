@@ -233,10 +233,12 @@ void OpenGLRender::on_unrealize() {
 bool OpenGLRender::on_key_pressed(guint keyval, guint keycode, Gdk::ModifierType state) {
     auto processed = true;
     switch (keyval) {
-        case GDK_KEY_w: { camera.StartForward(); break; }
-        case GDK_KEY_s: { camera.StartBack(); break; }
-        case GDK_KEY_a: { camera.StartLeft(); break; }
-        case GDK_KEY_d: { camera.StartRight(); break; }
+        case GDK_KEY_w:         { camera.StartForward(); break; }
+        case GDK_KEY_s:         { camera.StartBack(); break; }
+        case GDK_KEY_a:         { camera.StartLeft(); break; }
+        case GDK_KEY_d:         { camera.StartRight(); break; }
+        case GDK_KEY_space:     { camera.StartUp(); break; }
+        case GDK_KEY_Control_L: { camera.StartDown(); break; }
         default: { processed = false; break; }
     }
 
@@ -245,10 +247,12 @@ bool OpenGLRender::on_key_pressed(guint keyval, guint keycode, Gdk::ModifierType
 
 void OpenGLRender::on_key_released(guint keyval, guint keycode, Gdk::ModifierType state) {
     switch (keyval) {
-        case GDK_KEY_w: { camera.StopForward(); break; }
-        case GDK_KEY_s: { camera.StopBack(); break; }
-        case GDK_KEY_a: { camera.StopLeft(); break; }
-        case GDK_KEY_d: { camera.StopRight(); break; }
+        case GDK_KEY_w:         { camera.StopForward(); break; }
+        case GDK_KEY_s:         { camera.StopBack(); break; }
+        case GDK_KEY_a:         { camera.StopLeft(); break; }
+        case GDK_KEY_d:         { camera.StopRight(); break; }
+        case GDK_KEY_space:     { camera.StopUp(); break; }
+        case GDK_KEY_Control_L: { camera.StopDown(); break; }
     }
 }
 

@@ -49,6 +49,16 @@ public:
         UpdateCameraMoveDir();
     }
 
+    void StartUp() {
+        moveDirs.up = 1;
+        UpdateCameraMoveDir();
+    }
+
+    void StartDown() {
+        moveDirs.down = 1;
+        UpdateCameraMoveDir();
+    }
+
     void StopForward() {
         moveDirs.forward = 0;
         UpdateCameraMoveDir();
@@ -66,6 +76,16 @@ public:
 
     void StopRight() {
         moveDirs.right = 0;
+        UpdateCameraMoveDir();
+    }
+
+    void StopUp() {
+        moveDirs.up = 0;
+        UpdateCameraMoveDir();
+    }
+
+    void StopDown() {
+        moveDirs.down = 0;
         UpdateCameraMoveDir();
     }
 
@@ -129,9 +149,17 @@ private:
         uint8_t back:1    = 0;
         uint8_t left:1    = 0;
         uint8_t right:1   = 0;
+        uint8_t up:1      = 0;
+        uint8_t down:1    = 0;
 
         bool IsMoving() const {
-            return 0 != forward || 0 != back || 0 != left || 0 != right;
+            return
+                0 != forward
+             || 0 != back
+             || 0 != left
+             || 0 != right
+             || 0 != up
+             || 0 != down;
         }
     };
     MoveDirs moveDirs;
@@ -141,8 +169,10 @@ private:
             float(moveDirs.forward) * frontDir
           - float(moveDirs.back) * frontDir
           + float(moveDirs.right) * glm::normalize(glm::cross(frontDir, upDir))
-          - float(moveDirs.left) * glm::normalize(glm::cross(frontDir, upDir));
-    }
+          - float(moveDirs.left) * glm::normalize(glm::cross(frontDir, upDir))
+          + float(moveDirs.up) * upDir
+          - float(moveDirs.down) * upDir;
+}
 
     float zoom = 45.0f;
     glm::vec3 pos;
