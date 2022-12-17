@@ -6,9 +6,21 @@
 
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtx/rotate_vector.hpp>
 
 class Camera {
 public:
+    Camera() {
+        frontDir = glm::normalize(frontDir);
+        upDir = glm::normalize(upDir);
+
+        // e0, e1, and up form an ONB of the initial camera position, with e0
+        // looking forward, but perpendicular to up. Yaw and pitch angles are
+        // relative to e0, e1 plane.
+        e1 = glm::normalize(glm::cross(upDir, frontDir));
+        e0 = glm::normalize(glm::cross(e1, upDir));
+    }
+
     void StartForward() {
         moveDirs.forward = 1;
         UpdateCameraMoveDir();
@@ -66,7 +78,7 @@ public:
     void OnPointerMotion(double x, double y) {
         auto offset = double(mouseSensitivity) * (glm::dvec2{x, y} - startMousepos);
 
-        yaw   = lastYaw + offset.x;
+        yaw   = lastYaw - offset.x;
         pitch = lastPitch - offset.y;
         if (89.0f < pitch) {
             pitch = 89.0f;
@@ -74,11 +86,8 @@ public:
         if (-89.0f > pitch) {
             pitch = -89.0f;
         }
-        frontDir = glm::normalize(glm::vec3{
-            std::cos(glm::radians(yaw)) * std::cos(glm::radians(pitch))
-          , std::sin(glm::radians(pitch))
-          , std::sin(glm::radians(yaw)) * std::cos(glm::radians(pitch))
-        });
+        frontDir = glm::rotate(e0, -glm::radians(pitch), e1);
+        frontDir = glm::rotate(frontDir, glm::radians(yaw), upDir);
     }
 
     void OnPointerLeave() {
@@ -132,13 +141,16 @@ private:
     glm::vec3 frontDir = glm::vec3(0.0f, 0.0f, -1.0f);
     glm::vec3 upDir    = glm::vec3(0.0f, 1.0f,  0.0f);
 
+    glm::vec3 e0;
+    glm::vec3 e1;
+
     float speed = 0.05f;
     glm::vec3 speedDir = glm::vec3(0.0f, 0.0f, 0.0f);
 
     static constexpr float mouseSensitivity = 0.1f;
     glm::dvec2 startMousepos;
-    float yaw       = -90.0f;
+    float yaw       = 0.0f;
     float pitch     = 0.0f;
-    float lastYaw   = -90.0f;
+    float lastYaw   = 0.0f;
     float lastPitch = 0.0f;
 };
