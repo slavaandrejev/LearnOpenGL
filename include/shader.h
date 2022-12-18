@@ -78,8 +78,8 @@ public:
     void set(const char *name, GLint v) {
         glUniform1i(glGetUniformLocation(id, name), v);
     }
-    void set(const char *name, float v0, float v1, float v2, float v3) {
-        glUniform4f(glGetUniformLocation(id, name), v0, v1, v2, v3);
+    void set(const char *name, const glm::vec4 &v) {
+        glUniform4f(glGetUniformLocation(id, name), v[0], v[1], v[2], v[3]);
     }
     void set(const char *name, const glm::mat4 &m) {
         glUniformMatrix4fv(glGetUniformLocation(id, name), 1, GL_FALSE, glm::value_ptr(m));
