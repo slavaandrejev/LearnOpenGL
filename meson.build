@@ -123,3 +123,4 @@ epoxy_dep = dependency('epoxy')
 gtk_dep   = dependency('gtkmm-4.0')
 
 subdir('01. Getting started')
+subdir('02. Lighting')
