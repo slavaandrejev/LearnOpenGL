@@ -73,19 +73,19 @@ public:
     auto Id() const { return id; }
     void use() { glUseProgram(id); }
     void set(const char *name, float v) {
-        glUniform1f(glGetUniformLocation(id, name), v);
+        glProgramUniform1f(id, glGetUniformLocation(id, name), v);
     }
     void set(const char *name, GLint v) {
-        glUniform1i(glGetUniformLocation(id, name), v);
+        glProgramUniform1i(id, glGetUniformLocation(id, name), v);
     }
     void set(const char *name, const glm::vec3 &v) {
-        glUniform3f(glGetUniformLocation(id, name), v[0], v[1], v[2]);
+        glProgramUniform3f(id, glGetUniformLocation(id, name), v[0], v[1], v[2]);
     }
     void set(const char *name, const glm::vec4 &v) {
-        glUniform4f(glGetUniformLocation(id, name), v[0], v[1], v[2], v[3]);
+        glProgramUniform4f(id, glGetUniformLocation(id, name), v[0], v[1], v[2], v[3]);
     }
     void set(const char *name, const glm::mat4 &m) {
-        glUniformMatrix4fv(glGetUniformLocation(id, name), 1, GL_FALSE, glm::value_ptr(m));
+        glProgramUniformMatrix4fv(id, glGetUniformLocation(id, name), 1, GL_FALSE, glm::value_ptr(m));
     }
 
 private:

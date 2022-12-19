@@ -109,7 +109,6 @@ void OpenGLRender::on_realize() {
         "/vs.glsl", GL_VERTEX_SHADER,
         "/fs.glsl", GL_FRAGMENT_SHADER);
 
-    renderingProgram->use();
     renderingProgram->set("texture1", 0);
     renderingProgram->set("texture2", 1);
 

@@ -84,7 +84,7 @@ bool OpenGLRender::on_render(const Glib::RefPtr<Gdk::GLContext>& context) {
     lightCubeShader->set("projection", projection);
     auto model = glm::translate(glm::mat4(1.0f), lightPos);
     model = glm::scale(model, glm::vec3(0.2f));
-    lightingShader->set("model", model);
+    lightCubeShader->set("model", model);
 
     glBindVertexArray(lightCubeVAO);
     glDrawArrays(GL_TRIANGLES, 0, 36);
@@ -102,8 +102,6 @@ void OpenGLRender::on_realize() {
     lightCubeShader = std::make_unique<Shader>(
         "/light-cube-vs.glsl", GL_VERTEX_SHADER,
         "/light-cube-fs.glsl", GL_FRAGMENT_SHADER);
-
-    lightingShader->use();
 
     lightingShader->set("objectColor", {1.0f, 0.5f, 0.31f});
     lightingShader->set("lightColor",  {1.0f, 1.0f, 1.0f});
