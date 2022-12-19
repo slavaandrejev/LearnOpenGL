@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<gresources>
+    <gresource prefix="/">
+        <file>specular-vs.glsl</file>
+        <file>specular-fs.glsl</file>
+        <file>light-cube-vs.glsl</file>
+        <file>light-cube-fs.glsl</file>
+        <file>specular-window.ui</file>
+    </gresource>
+</gresources>

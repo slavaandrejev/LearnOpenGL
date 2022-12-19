@@ -151,6 +151,10 @@ public:
         return glm::lookAt(pos, pos + frontDir, upDir);
     }
 
+    auto GetPosition() const {
+        return pos;
+    }
+
     auto GetZoom() const {
         return zoom;
     }
