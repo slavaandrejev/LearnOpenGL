@@ -183,7 +183,6 @@ void OpenGLRender::on_realize() {
     };
 
     glCreateVertexArrays(1, &VAO);
-    glBindVertexArray(VAO);
     glCreateBuffers(1, &VBO);
 
     glNamedBufferStorage(VBO, sizeof(vertices), &vertices[0], 0);
