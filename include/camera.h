@@ -27,6 +27,10 @@ public:
         // relative to e0, e1 plane.
         e1 = glm::normalize(glm::cross(upDir, frontDir));
         e0 = glm::normalize(glm::cross(e1, upDir));
+
+        // e0 is chosen in a way that the initial yaw is always 0, but we have
+        // to calculate the initial pitch.
+        lastPitch = pitch = glm::degrees(std::atan2(glm::dot(frontDir, up), glm::dot(frontDir, e0)));
     }
 
     void StartForward() {
