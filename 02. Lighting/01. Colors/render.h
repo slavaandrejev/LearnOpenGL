@@ -49,7 +49,7 @@ private:
     glm::vec3 lightPos{1.2f, 1.0f, 2.0f};
 
     bool mouseGrabbed = false;
-    Camera camera;
+    Camera camera{{1.18f, 1.56f, 2.93f}, {0.0f, 1.0f, 0.0f}, {-0.18f, -0.51f, -0.84f}};
 
     gint64 startTime = -1;
     float  curTime   = -1.0f;
