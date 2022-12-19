@@ -84,6 +84,9 @@ public:
     void set(const char *name, const glm::vec4 &v) {
         glProgramUniform4f(id, glGetUniformLocation(id, name), v[0], v[1], v[2], v[3]);
     }
+    void set(const char *name, const glm::mat3 &m) {
+        glProgramUniformMatrix3fv(id, glGetUniformLocation(id, name), 1, GL_FALSE, glm::value_ptr(m));
+    }
     void set(const char *name, const glm::mat4 &m) {
         glProgramUniformMatrix4fv(id, glGetUniformLocation(id, name), 1, GL_FALSE, glm::value_ptr(m));
     }
