@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<gresources>
+    <gresource prefix="/">
+        <file>ex-001-vs.glsl</file>
+        <file>ex-001-fs.glsl</file>
+        <file>light-cube-vs.glsl</file>
+        <file>light-cube-fs.glsl</file>
+        <file>ex-001-window.ui</file>
+    </gresource>
+</gresources>
