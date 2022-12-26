@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<gresources>
+    <gresource prefix="/">
+        <file compressed="true">specular-map-vs.glsl</file>
+        <file compressed="true">specular-map-fs.glsl</file>
+        <file compressed="true">light-cube-vs.glsl</file>
+        <file compressed="true">light-cube-fs.glsl</file>
+        <file compressed="true">specular-map-window.ui</file>
+        <file>container2.png</file>
+        <file>container2_specular.png</file>
+    </gresource>
+</gresources>
