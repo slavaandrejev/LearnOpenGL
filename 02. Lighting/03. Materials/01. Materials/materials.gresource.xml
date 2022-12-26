@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<gresources>
+    <gresource prefix="/">
+        <file compressed="true">materials-vs.glsl</file>
+        <file compressed="true">materials-fs.glsl</file>
+        <file compressed="true">light-cube-vs.glsl</file>
+        <file compressed="true">light-cube-fs.glsl</file>
+        <file compressed="true">materials-window.ui</file>
+    </gresource>
+</gresources>
