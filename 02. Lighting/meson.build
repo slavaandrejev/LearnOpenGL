@@ -1,3 +1,4 @@
 subdir('01. Colors')
 subdir('02. Basic Lighting')
 subdir('03. Materials')
+subdir('04. Lighting Maps')
