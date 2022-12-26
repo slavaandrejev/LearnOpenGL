@@ -2,7 +2,7 @@ gtk_files = gnome.compile_resources(
     'cube-resources'
   , 'cube.gresource.xml'
   , c_name: 'cube'
-  , source_dir: [project_folder / 'resources']
+  , source_dir: [project_folder / 'resources' / 'textures']
 )
 
 executable(

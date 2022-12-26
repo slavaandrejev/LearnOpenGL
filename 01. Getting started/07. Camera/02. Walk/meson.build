@@ -2,7 +2,7 @@ gtk_files = gnome.compile_resources(
     'walk-resources'
   , 'walk.gresource.xml'
   , c_name: 'camera_walk'
-  , source_dir: [project_folder / 'resources']
+  , source_dir: [project_folder / 'resources' / 'textures']
 )
 
 executable(

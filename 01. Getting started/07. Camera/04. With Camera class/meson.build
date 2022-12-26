@@ -2,7 +2,7 @@ gtk_files = gnome.compile_resources(
     'wcamera-resources'
   , 'wcamera.gresource.xml'
   , c_name: 'with_camera_wlz'
-  , source_dir: [project_folder / 'resources']
+  , source_dir: [project_folder / 'resources' / 'textures']
 )
 
 executable(

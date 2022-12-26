@@ -2,7 +2,7 @@ gtk_files = gnome.compile_resources(
     'ex-001-resources'
   , 'ex-001.gresource.xml'
   , c_name: 'transformations_ex_001'
-  , source_dir: [project_folder / 'resources']
+  , source_dir: [project_folder / 'resources' / 'textures']
 )
 
 executable(

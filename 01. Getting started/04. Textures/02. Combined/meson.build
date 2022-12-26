@@ -2,7 +2,7 @@ gtk_files = gnome.compile_resources(
     'combined-resources'
   , 'combined.gresource.xml'
   , c_name: 'combined'
-  , source_dir: [project_folder / 'resources']
+  , source_dir: [project_folder / 'resources' / 'textures']
 )
 
 executable(

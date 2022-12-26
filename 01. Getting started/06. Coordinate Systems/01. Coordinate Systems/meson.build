@@ -2,7 +2,7 @@ gtk_files = gnome.compile_resources(
     'cs-resources'
   , 'cs.gresource.xml'
   , c_name: 'cs'
-  , source_dir: [project_folder / 'resources']
+  , source_dir: [project_folder / 'resources' / 'textures']
 )
 
 executable(

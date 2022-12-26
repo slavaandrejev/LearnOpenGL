@@ -2,7 +2,7 @@ gtk_files = gnome.compile_resources(
     'circle-resources'
   , 'circle.gresource.xml'
   , c_name: 'camera_circle'
-  , source_dir: [project_folder / 'resources']
+  , source_dir: [project_folder / 'resources' / 'textures']
 )
 
 executable(

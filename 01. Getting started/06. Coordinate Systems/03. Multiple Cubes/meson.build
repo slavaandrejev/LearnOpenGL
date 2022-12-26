@@ -2,7 +2,7 @@ gtk_files = gnome.compile_resources(
     'mcubes-resources'
   , 'mcubes.gresource.xml'
   , c_name: 'mcubes'
-  , source_dir: [project_folder / 'resources']
+  , source_dir: [project_folder / 'resources' / 'textures']
 )
 
 executable(
