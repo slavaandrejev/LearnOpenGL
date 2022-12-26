@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<gresources>
+    <gresource prefix="/">
+        <file compressed="true">ex-001-vs.glsl</file>
+        <file compressed="true">ex-001-fs.glsl</file>
+        <file compressed="true">light-cube-vs.glsl</file>
+        <file compressed="true">light-cube-fs.glsl</file>
+        <file compressed="true">ex-001-window.ui</file>
+        <file>container2.png</file>
+        <file>container2_specular.png</file>
+    </gresource>
+</gresources>
