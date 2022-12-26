@@ -3,6 +3,6 @@
     <gresource prefix="/">
         <file>vs.glsl</file>
         <file>fs.glsl</file>
-        <file>uniform-window.ui</file>
+        <file>appwindow.ui</file>
     </gresource>
 </gresources>

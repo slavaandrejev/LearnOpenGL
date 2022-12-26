@@ -5,7 +5,7 @@
         <file compressed="true">specular-map-fs.glsl</file>
         <file compressed="true">light-cube-vs.glsl</file>
         <file compressed="true">light-cube-fs.glsl</file>
-        <file compressed="true">specular-map-window.ui</file>
+        <file compressed="true">appwindow.ui</file>
         <file>container2.png</file>
         <file>container2_specular.png</file>
     </gresource>

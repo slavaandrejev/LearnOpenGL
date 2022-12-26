@@ -4,6 +4,6 @@
         <file>vs.glsl</file>
         <file>fs-01.glsl</file>
         <file>fs-02.glsl</file>
-        <file>ex-003-window.ui</file>
+        <file>appwindow.ui</file>
     </gresource>
 </gresources>

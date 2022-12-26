@@ -1,6 +1,6 @@
 #include <glibmm/refptr.h>
 
-#include "colors-window.h"
+#include "appwindow.h"
 
 MainWindow::MainWindow(BaseObjectType* cobject,
                        const Glib::RefPtr<Gtk::Builder>& refBuilder)
@@ -11,10 +11,10 @@ MainWindow::MainWindow(BaseObjectType* cobject,
 }
 
 MainWindow* MainWindow::create() {
-    auto refBuilder = Gtk::Builder::create_from_resource("/colors-window.ui");
+    auto refBuilder = Gtk::Builder::create_from_resource("/appwindow.ui");
     auto window     = Gtk::Builder::get_widget_derived<MainWindow>(refBuilder, "mainWindow");
-    if (!window) {
-        throw std::runtime_error(R"(No "mainWindow" object in colors-window.ui)");
-    }
+    // GTK has excellent error reporting infrastructure. There is no need to
+    // check for errors here. GTK will throw an exception with the text
+    // even sometimes translated to your language.
     return window;
 }

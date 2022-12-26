@@ -3,7 +3,7 @@
 
 #include <fmt/printf.h>
 
-#include "ex-002-window.h"
+#include "appwindow.h"
 
 int main (int argc, char *argv[]) {
     auto app = Gtk::Application::create();

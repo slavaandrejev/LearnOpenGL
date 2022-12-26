@@ -6,8 +6,7 @@ gtk_files = gnome.compile_resources(
 
 executable(
     'shaders_interpolation'
-  , 'interpolation.cpp'
-  , 'interpolation-window.cpp'
+  , appwindow
   , 'render.cpp'
   , gtk_files
   , include_directories: includeFolders

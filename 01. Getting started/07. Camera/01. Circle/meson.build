@@ -7,8 +7,7 @@ gtk_files = gnome.compile_resources(
 
 executable(
     'circle'
-  , 'circle.cpp'
-  , 'circle-window.cpp'
+  , appwindow
   , 'render.cpp'
   , gtk_files
   , include_directories: includeFolders

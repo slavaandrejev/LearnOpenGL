@@ -3,6 +3,6 @@
     <gresource prefix="/">
         <file>program.vs.glsl</file>
         <file>program.fs.glsl</file>
-        <file>ex-002-window.ui</file>
+        <file>appwindow.ui</file>
     </gresource>
 </gresources>

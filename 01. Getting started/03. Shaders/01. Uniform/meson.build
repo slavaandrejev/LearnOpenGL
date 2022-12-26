@@ -6,8 +6,7 @@ gtk_files = gnome.compile_resources(
 
 executable(
     'shaders_uniform'
-  , 'uniform.cpp'
-  , 'uniform-window.cpp'
+  , appwindow
   , 'render.cpp'
   , gtk_files
   , include_directories: includeFolders

@@ -6,8 +6,7 @@ gtk_files = gnome.compile_resources(
 
 executable(
     'hello-triangle'
-  , 'hello-triangle.cpp'
-  , 'hello-triangle-window.cpp'
+  , appwindow
   , 'render.cpp'
   , gtk_files
   , include_directories: includeFolders

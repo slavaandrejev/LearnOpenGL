@@ -3,7 +3,7 @@
     <gresource prefix="/">
         <file>vs.glsl</file>
         <file>fs.glsl</file>
-        <file>textures-window.ui</file>
+        <file>appwindow.ui</file>
         <file>container.jpg</file>
     </gresource>
 </gresources>

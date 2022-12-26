@@ -5,6 +5,6 @@
         <file compressed="true">materials-fs.glsl</file>
         <file compressed="true">light-cube-vs.glsl</file>
         <file compressed="true">light-cube-fs.glsl</file>
-        <file compressed="true">materials-window.ui</file>
+        <file compressed="true">appwindow.ui</file>
     </gresource>
 </gresources>

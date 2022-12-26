@@ -7,8 +7,7 @@ gtk_files = gnome.compile_resources(
 
 executable(
     'wcamera'
-  , 'wcamera.cpp'
-  , 'wcamera-window.cpp'
+  , appwindow
   , 'render.cpp'
   , gtk_files
   , include_directories: includeFolders

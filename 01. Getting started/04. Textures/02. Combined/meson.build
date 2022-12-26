@@ -7,8 +7,7 @@ gtk_files = gnome.compile_resources(
 
 executable(
     'textures_combined'
-  , 'combined.cpp'
-  , 'combined-window.cpp'
+  , appwindow
   , 'render.cpp'
   , gtk_files
   , include_directories: includeFolders
