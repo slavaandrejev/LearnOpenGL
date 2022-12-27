@@ -14,3 +14,36 @@ All logic is concentrated in the three methods: `on_realize`, `on_render`, and
 `on_unrealize`.
 
 The original code is licensed under the terms of the CC BY-NC 4.0 license.
+
+## Instructions to build and run on Windows
+
+Download and install MSYS2 following [these instructions](https://www.msys2.org/).
+MSYS2 gives you several options for the [environment](https://www.msys2.org/docs/environments/)
+to run. The following instructions assume UCRT environment, you have to click the correspondent
+link installed by MSYS2 to open it. Then, from there, first, install the necessary packages:
+```
+pacman -S mingw-w64-ucrt-x86_64-gcc \
+          mingw-w64-ucrt-x86_64-meson \
+          mingw-w64-ucrt-x86_64-cmake \
+          mingw-w64-ucrt-x86_64-boost \
+          mingw-w64-ucrt-x86_64-glm \
+          mingw-w64-ucrt-x86_64-fmt \
+          mingw-w64-ucrt-x86_64-libepoxy \
+          mingw-w64-ucrt-x86_64-gtkmm-4.0
+```
+Now change to the directory where you cloned this repository and issue the following command:
+```
+CC=gcc CXX=g++ meson setup --backend ninja --buildtype debug build/debug
+```
+This will make Meson to check if all dependencies are installed. Now we can compile:
+```
+meson compile -C build/debug
+```
+Finally, you can run somethiing:
+```
+'build/debug/02. Lighting/04. Lighting Maps/03. Exercises/003/ex-003.exe'
+```
+You will see this:
+
+![изображение](https://user-images.githubusercontent.com/59517790/209611287-d385d087-27d7-499f-b14d-8cde651a29bc.png)
+
