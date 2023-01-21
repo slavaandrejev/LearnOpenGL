@@ -50,9 +50,9 @@ private:
 
     bool mouseGrabbed = false;
     Camera camera{
-        {-2.79f, 6.24f, -3.10f}
+        {-5.86f, 2.36f, -4.75f}
       , {0.0f, 1.0f, 0.0f}
-      , {0.38f, -0.91f, 0.13f}
+      , {0.87f, -0.23f, 0.44f}
       };
 
     gint64 startTime = -1;

@@ -99,7 +99,9 @@ bool OpenGLRender::on_render(const Glib::RefPtr<Gdk::GLContext>& context) {
         auto model = glm::translate(glm::mat4(1.0f), cubePositions[i]);
         auto angle = 20.0f * i;
         model = glm::rotate(model, glm::radians(angle), glm::vec3(1.0f, 0.3f, 0.5f));
+        auto normalMatrix = glm::transpose(glm::inverse(glm::mat3(model)));
         lightingShader->set("model", model);
+        lightingShader->set("normalMatrix", normalMatrix);
         glDrawArrays(GL_TRIANGLES, 0, 36);
     }
 
@@ -125,11 +127,6 @@ void OpenGLRender::on_realize() {
     lightingShader->set("light.diffuse", {0.5f, 0.5f, 0.5f});
     lightingShader->set("light.specular", {1.0f, 1.0f, 1.0f});
     lightingShader->set("light.direction", {-0.2f, -1.0f, -0.3f});
-
-    auto cubeModel = glm::mat4(1.0f);
-    auto normalMatrix = glm::transpose(glm::inverse(glm::mat3(cubeModel)));
-    lightingShader->set("model", cubeModel);
-    lightingShader->set("normalMatrix", normalMatrix);
 
     float vertices[] = {
         // positions         // normals          // texture coords
