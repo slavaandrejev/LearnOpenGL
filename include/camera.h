@@ -155,6 +155,10 @@ public:
         return pos;
     }
 
+    auto GetDirection() const {
+        return frontDir;
+    }
+
     auto GetZoom() const {
         return zoom;
     }

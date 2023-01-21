@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<gresources>
+    <gresource prefix="/">
+        <file compressed="true">spotlight-vs.glsl</file>
+        <file compressed="true">spotlight-fs.glsl</file>
+        <file compressed="true">appwindow.ui</file>
+        <file>container2.png</file>
+        <file>container2_specular.png</file>
+    </gresource>
+</gresources>
