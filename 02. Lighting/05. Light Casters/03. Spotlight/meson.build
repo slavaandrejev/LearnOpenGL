@@ -1,7 +1,7 @@
 gtk_files = gnome.compile_resources(
     'spotlight-resources'
   , 'spotlight.gresource.xml'
-  , c_name: 'point'
+  , c_name: 'spotlight'
   , source_dir: [project_folder / 'resources' / 'textures']
 )
 
