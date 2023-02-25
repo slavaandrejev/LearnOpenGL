@@ -95,8 +95,6 @@ bool OpenGLRender::on_render(const Glib::RefPtr<Gdk::GLContext>& context) {
     lightingShader->set("viewPos", camera.GetPosition());
     lightingShader->set("light.position", camera.GetPosition());
     lightingShader->set("light.direction", camera.GetDirection());
-    lightingShader->set("light.cutOff",   glm::cos(glm::radians(12.5f)));
-    lightingShader->set("light.outerCutOff",   glm::cos(glm::radians(17.5f)));
 
     glBindVertexArray(cubeVAO);
     for (auto i = size_t{}; cubePositions.size() > i; ++i) {
@@ -133,6 +131,8 @@ void OpenGLRender::on_realize() {
     lightingShader->set("light.constant",  1.0f);
     lightingShader->set("light.linear",    0.09f);
     lightingShader->set("light.quadratic", 0.032f);
+    lightingShader->set("light.cutOff",   glm::cos(glm::radians(12.5f)));
+    lightingShader->set("light.outerCutOff",   glm::cos(glm::radians(17.5f)));
 
     float vertices[] = {
         // positions         // normals          // texture coords
