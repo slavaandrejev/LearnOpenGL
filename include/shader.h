@@ -11,6 +11,7 @@
 #include <glm/mat4x4.hpp>
 #include <glm/gtc/type_ptr.hpp>
 
+#include <fmt/format.h>
 #include <fmt/printf.h>
 
 class Shader {
@@ -89,6 +90,27 @@ public:
     }
     void set(const char *name, const glm::mat4 &m) {
         glProgramUniformMatrix4fv(id, glGetUniformLocation(id, name), 1, GL_FALSE, glm::value_ptr(m));
+    }
+    void set(const char *array_name, size_t index, const char *const_name, float v) {
+        glProgramUniform1f(
+            id
+          , glGetUniformLocation(
+                id
+              , fmt::format("{}[{}].{}", array_name, index, const_name).c_str()
+              )
+          , v);
+    }
+    void set(const char *array_name, size_t index, const char *const_name, const glm::vec3 &v) {
+        glProgramUniform3f(
+            id
+          , glGetUniformLocation(
+                id
+              , fmt::format("{}[{}].{}", array_name, index, const_name).c_str()
+              )
+          , v[0]
+          , v[1]
+          , v[2]
+          );
     }
 
 private:
