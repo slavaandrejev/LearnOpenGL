@@ -156,19 +156,19 @@ void OpenGLRender::on_realize() {
         lightingShader->set("pointLights", i, "diffuse", {0.8f, 0.8f, 0.8f});
         lightingShader->set("pointLights", i, "specular", {1.0f, 1.0f, 1.0f});
         lightingShader->set("pointLights", i, "position", pointLightPositions[i]);
-        lightingShader->set("pointLights", i, "constant",  1.0f);
-        lightingShader->set("pointLights", i, "linear",    0.09f);
+        lightingShader->set("pointLights", i, "constant", 1.0f);
+        lightingShader->set("pointLights", i, "linear", 0.09f);
         lightingShader->set("pointLights", i, "quadratic", 0.032f);
     }
 
     lightingShader->set("spotLight.ambient", {0.0f, 0.0f, 0.0f});
     lightingShader->set("spotLight.diffuse", {1.0f, 1.0f, 1.0f});
     lightingShader->set("spotLight.specular", {1.0f, 1.0f, 1.0f});
-    lightingShader->set("spotLight.constant",  1.0f);
-    lightingShader->set("spotLight.linear",    0.09f);
+    lightingShader->set("spotLight.constant", 1.0f);
+    lightingShader->set("spotLight.linear", 0.09f);
     lightingShader->set("spotLight.quadratic", 0.032f);
-    lightingShader->set("spotLight.cutOff",   glm::cos(glm::radians(12.5f)));
-    lightingShader->set("spotLight.outerCutOff",   glm::cos(glm::radians(15.0f)));
+    lightingShader->set("spotLight.cutOff", glm::cos(glm::radians(12.5f)));
+    lightingShader->set("spotLight.outerCutOff", glm::cos(glm::radians(15.0f)));
 
     float vertices[] = {
         // positions         // normals          // texture coords
