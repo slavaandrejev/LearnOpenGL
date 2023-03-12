@@ -96,7 +96,7 @@ void OpenGLRender::on_realize() {
     Gtk::GLArea::on_realize();
     make_current();
 
-    diffuseMap = LoadTextureFromResources("/container2.png");
+    diffuseMap = LoadTextureFromPixbuf(*Gdk::Pixbuf::create_from_resource("/container2.png"));
 
     lightingShader = std::make_unique<Shader>(
         "/diffuse-map-vs.glsl", GL_VERTEX_SHADER,

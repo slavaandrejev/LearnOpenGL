@@ -114,8 +114,8 @@ void OpenGLRender::on_realize() {
     Gtk::GLArea::on_realize();
     make_current();
 
-    diffuseMap = LoadTextureFromResources("/container2.png");
-    specularMap = LoadTextureFromResources("/container2_specular.png");
+    diffuseMap = LoadTextureFromPixbuf(*Gdk::Pixbuf::create_from_resource("/container2.png"));
+    specularMap = LoadTextureFromPixbuf(*Gdk::Pixbuf::create_from_resource("/container2_specular.png"));
 
     lightingShader = std::make_unique<Shader>(
         "/spotlight-vs.glsl", GL_VERTEX_SHADER,

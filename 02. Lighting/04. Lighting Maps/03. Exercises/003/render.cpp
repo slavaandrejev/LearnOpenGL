@@ -98,9 +98,9 @@ void OpenGLRender::on_realize() {
     Gtk::GLArea::on_realize();
     make_current();
 
-    diffuseMap  = LoadTextureFromResources("/container2.png");
-    specularMap = LoadTextureFromResources("/container2_specular.png");
-    emissionMap = LoadTextureFromResources("/matrix.jpg");
+    diffuseMap  = LoadTextureFromPixbuf(*Gdk::Pixbuf::create_from_resource("/container2.png"));
+    specularMap = LoadTextureFromPixbuf(*Gdk::Pixbuf::create_from_resource("/container2_specular.png"));
+    emissionMap = LoadTextureFromPixbuf(*Gdk::Pixbuf::create_from_resource("/matrix.jpg"));
 
     lightingShader = std::make_unique<Shader>(
         "/ex-003-vs.glsl", GL_VERTEX_SHADER,

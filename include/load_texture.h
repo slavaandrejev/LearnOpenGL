@@ -6,14 +6,14 @@
 
 #include <epoxy/gl.h>
 
-GLuint LoadTextureFromResources(const std::string &path) {
-    auto img = Gdk::Pixbuf::create_from_resource(path);
+inline
+GLuint LoadTextureFromPixbuf(const Gdk::Pixbuf &img) {
     auto tex = GLuint{};
 
     glCreateTextures(GL_TEXTURE_2D, 1, &tex);
     auto format         = GLenum{};
     auto internalFormat = GLenum{};
-    switch (img->get_n_channels()) {
+    switch (img.get_n_channels()) {
         case 1: {
             format =  GL_RED;
             internalFormat = GL_R8;
@@ -34,17 +34,17 @@ GLuint LoadTextureFromResources(const std::string &path) {
     glTextureParameteri(tex, GL_TEXTURE_WRAP_T, GL_REPEAT);
     glTextureParameteri(tex, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
     glTextureParameteri(tex, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-    glTextureStorage2D(tex, 1, internalFormat, img->get_width(), img->get_height());
+    glTextureStorage2D(tex, 1, internalFormat, img.get_width(), img.get_height());
     glTextureSubImage2D(
         tex
       , 0
       , 0
       , 0
-      , img->get_width()
-      , img->get_height()
+      , img.get_width()
+      , img.get_height()
       , format
       , GL_UNSIGNED_BYTE
-      , img->get_pixels());
+      , img.get_pixels());
     glGenerateTextureMipmap(tex);
 
     return tex;
