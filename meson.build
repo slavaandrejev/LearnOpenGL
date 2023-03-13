@@ -30,13 +30,15 @@ linker_options        = common_options + []
 
 gnome = import('gnome')
 
-boost_dep = dependency('boost')
-fmt_dep   = dependency('fmt', method: 'cmake')
-glm_dep   = dependency('glm', method: 'cmake')
-epoxy_dep = dependency('epoxy')
-gtk_dep   = dependency('gtkmm-4.0')
+assimp_dep = dependency('assimp')
+boost_dep  = dependency('boost', modules: ['filesystem'])
+epoxy_dep  = dependency('epoxy')
+fmt_dep    = dependency('fmt', method: 'cmake')
+glm_dep    = dependency('glm', method: 'cmake')
+gtk_dep    = dependency('gtkmm-4.0')
 
 subdir('appwindow')
 
 subdir('01. Getting started')
 subdir('02. Lighting')
+subdir('03. Model Loading')

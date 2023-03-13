@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<gresources>
+    <gresource prefix="/">
+        <file compressed="true">model-loading-vs.glsl</file>
+        <file compressed="true">model-loading-fs.glsl</file>
+        <file compressed="true">appwindow.ui</file>
+        <file>container2.png</file>
+        <file>container2_specular.png</file>
+    </gresource>
+</gresources>
