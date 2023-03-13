@@ -27,10 +27,6 @@ struct Texture {
 
 class Mesh {
 public:
-    std::vector<Vertex>  vertices;
-    std::vector<GLuint>  indices;
-    std::vector<Texture> textures;
-
     Mesh(std::vector<Vertex> vertices, std::vector<GLuint> indices, std::vector<Texture> textures)
       : vertices(std::move(vertices))
       , indices(std::move(indices))
@@ -39,19 +35,35 @@ public:
         SetupMesh();
     }
 
+    // To avoid complications of shared ownership of OpenGL objects, let's just
+    // disable copy.
     Mesh(const Mesh &m) = delete;
     Mesh & operator=(const Mesh &) = delete;
-    Mesh & operator=(Mesh &&) = delete;
 
-    Mesh(Mesh &&m)
-      : vertices(std::move(m.vertices))
-      , indices(std::move(m.indices))
-      , textures(std::move(m.textures))
-      , VAO(m.VAO)
-      , VBO(m.VBO)
-      , EBO(m.EBO)
+    Mesh(Mesh &&m) noexcept(
+        noexcept(std::declval<Mesh>() = std::declval<Mesh&&>()))
     {
-        m.VAO = m.VBO = m.EBO = 0;
+        *this = std::move(m);
+    }
+
+    Mesh & operator=(Mesh &&m) noexcept(
+        noexcept(std::declval<std::vector<Vertex>>() = std::declval<std::vector<Vertex>&&>()) &&
+        noexcept(std::declval<std::vector<GLuint>>() = std::declval<std::vector<GLuint>&&>()) &&
+        noexcept(std::declval<std::vector<Texture>>() = std::declval<std::vector<Texture>&&>()))
+    {
+        if (&m != this) {
+            vertices = std::move(m.vertices);
+            indices  = std::move(m.indices);
+            textures = std::move(m.textures);
+
+            VAO = m.VAO;
+            VBO = m.VBO;
+            EBO = m.EBO;
+
+            m.VAO = m.VBO = m.EBO = 0;
+        }
+
+        return *this;
     }
 
     ~Mesh() {
@@ -79,6 +91,7 @@ public:
             } else if ("specular" == textures[i].type) {
                 number = specularNr++;
             }
+            // Note that the sampler name has type `GLint`.
             shader.set(fmt::format("material.{}[{}]", textures[i].type, number).c_str(), static_cast<GLint>(i));
             glBindTextureUnit(i, textures[i].id);
         }
@@ -90,6 +103,10 @@ public:
     }
 
 private:
+    std::vector<Vertex>  vertices;
+    std::vector<GLuint>  indices;
+    std::vector<Texture> textures;
+
     GLuint VAO{};
     GLuint VBO{};
     GLuint EBO{};
