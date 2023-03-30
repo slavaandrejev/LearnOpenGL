@@ -63,6 +63,7 @@ bool OpenGLRender::on_render(const Glib::RefPtr<Gdk::GLContext>& context) {
 
     shader->set("view", view);
     shader->set("projection", projection);
+    shader->set("viewPos", camera.GetPosition());
 
     model->Draw(*shader);
 
@@ -78,8 +79,20 @@ void OpenGLRender::on_realize() {
         "/model-loading-fs.glsl", GL_FRAGMENT_SHADER);
     model = std::make_unique<Model>("/resources/objects/backpack/backpack.obj");
 
-    auto modelMtx = glm::mat4(1.0f);
+    auto modelMtx  = glm::mat4(1.0f);
+    auto normalMtx = glm::transpose(glm::inverse(glm::mat3(modelMtx)));
     shader->set("model", modelMtx);
+    shader->set("normalMatrix", normalMtx);
+
+    shader->set("material.shininess", 32.0f);
+
+    shader->set("pointLight.ambient", {0.05f, 0.05f, 0.05f});
+    shader->set("pointLight.diffuse", {0.8f, 0.8f, 0.8f});
+    shader->set("pointLight.specular", {1.0f, 1.0f, 1.0f});
+    shader->set("pointLight.position", { 0.7f, 0.2f, 2.0f});
+    shader->set("pointLight.constant", 1.0f);
+    shader->set("pointLight.linear", 0.09f);
+    shader->set("pointLight.quadratic", 0.032f);
 
     tick_callback_id = add_tick_callback(sigc::mem_fun(*this, &OpenGLRender::timer_event));
 }
