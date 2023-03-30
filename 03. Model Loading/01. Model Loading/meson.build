@@ -2,7 +2,7 @@ gtk_files = gnome.compile_resources(
     'model-loading-resources'
   , 'model-loading.gresource.xml'
   , c_name: 'model_loading'
-  , source_dir: [project_folder / 'resources' / 'textures']
+  , source_dir: [project_folder]
   )
 
 executable(

@@ -15,7 +15,9 @@
 #include <fmt/format.h>
 
 #include <gdkmm/pixbuf.h>
+#include <giomm/resource.h>
 
+#include <gresource_io.h>
 #include <load_texture.h>
 #include <mesh.h>
 
@@ -40,6 +42,8 @@ public:
 private:
     void LoadModel(std::string_view path) {
         auto import = Assimp::Importer{};
+        auto gres   = std::make_unique<GResourceIO>();
+        import.SetIOHandler(gres.release());
         auto scene = import.ReadFile(std::string{path}, aiProcess_Triangulate);
 
         if (nullptr == scene || scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE || nullptr == scene->mRootNode) {
@@ -55,7 +59,7 @@ private:
             meshes.emplace_back(ProcessMesh(mesh, scene));
         }
 
-        for(decltype(node->mNumChildren) i{}; node->mNumChildren > i; ++i) {
+        for (decltype(node->mNumChildren) i{}; node->mNumChildren > i; ++i) {
             ProcessNode(node->mChildren[i], scene);
         }
     }
@@ -114,7 +118,7 @@ private:
         auto textures = std::vector<Texture>{};
 
         auto numTex = mat->GetTextureCount(type);
-        for(decltype(numTex) i{}; numTex > i; ++i) {
+        for (decltype(numTex) i{}; numTex > i; ++i) {
             auto path = aiString{};
             mat->GetTexture(type, i, &path);
             auto loaded = std::find_if(textures_loaded.cbegin(), textures_loaded.cend(), [&](auto &&v) {
@@ -123,7 +127,7 @@ private:
             if (textures_loaded.cend() == loaded) {
                 auto texture = Texture{
                     .id = LoadTextureFromPixbuf(
-                        *Gdk::Pixbuf::create_from_file((directory / path.C_Str()).string())
+                        *Gdk::Pixbuf::create_from_resource((directory / path.C_Str()).string())
                       )
                   , .type = std::string{typeName}
                   , .path = path.C_Str()

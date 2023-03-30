@@ -4,7 +4,9 @@
         <file compressed="true">model-loading-vs.glsl</file>
         <file compressed="true">model-loading-fs.glsl</file>
         <file compressed="true">appwindow.ui</file>
-        <file>container2.png</file>
-        <file>container2_specular.png</file>
+        <file compressed="true">resources/objects/backpack/backpack.obj</file>
+        <file compressed="true">resources/objects/backpack/backpack.mtl</file>
+        <file compressed="false">resources/objects/backpack/diffuse.jpg</file>
+        <file compressed="false">resources/objects/backpack/specular.jpg</file>
     </gresource>
 </gresources>

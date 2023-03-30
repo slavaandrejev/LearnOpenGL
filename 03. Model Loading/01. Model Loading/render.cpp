@@ -76,7 +76,7 @@ void OpenGLRender::on_realize() {
     shader = std::make_unique<Shader>(
         "/model-loading-vs.glsl", GL_VERTEX_SHADER,
         "/model-loading-fs.glsl", GL_FRAGMENT_SHADER);
-    model = std::make_unique<Model>("resources/objects/backpack/backpack.obj");
+    model = std::make_unique<Model>("/resources/objects/backpack/backpack.obj");
 
     auto modelMtx = glm::mat4(1.0f);
     shader->set("model", modelMtx);
