@@ -30,7 +30,7 @@ linker_options        = common_options + []
 
 gnome = import('gnome')
 
-assimp_dep = dependency('assimp')
+assimp_dep = dependency('assimp', method: 'cmake')
 boost_dep  = dependency('boost', modules: ['filesystem'])
 epoxy_dep  = dependency('epoxy')
 fmt_dep    = dependency('fmt', method: 'cmake')
