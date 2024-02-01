@@ -118,10 +118,11 @@ void OpenGLRender::on_realize() {
     glVertexArrayVertexBuffer(VAO, 0, VBO, 0, 5 * sizeof(float));
     glVertexArrayElementBuffer(VAO, EBO);
 
-    add_tick_callback(sigc::mem_fun(*this, &OpenGLRender::timer_event));
+    tickCallbackId = add_tick_callback(sigc::mem_fun(*this, &OpenGLRender::timer_event));
 }
 
 void OpenGLRender::on_unrealize() {
+    remove_tick_callback(tickCallbackId);
     glDeleteVertexArrays(1, &VAO);
     glDeleteBuffers(1, &VBO);
     glDeleteBuffers(1, &EBO);

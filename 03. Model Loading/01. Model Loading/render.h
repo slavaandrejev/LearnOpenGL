@@ -34,8 +34,8 @@ private:
     Glib::RefPtr<Gtk::EventControllerScroll> scrollEvents;
     Glib::RefPtr<Gtk::GestureClick> clickEvents;
 
+    guint tickCallbackId{};
     bool timer_event(const Glib::RefPtr<Gdk::FrameClock>&);
-    guint tick_callback_id;
 
     std::unique_ptr<Model>  model;
     std::unique_ptr<Shader> shader;

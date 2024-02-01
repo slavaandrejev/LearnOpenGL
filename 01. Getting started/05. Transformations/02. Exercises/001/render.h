@@ -21,6 +21,7 @@ private:
     void on_realize() override;
     void on_unrealize() override;
 
+    guint tickCallbackId{};
     bool timer_event(const Glib::RefPtr<Gdk::FrameClock>&);
 
     std::unique_ptr<Shader> renderingProgram;

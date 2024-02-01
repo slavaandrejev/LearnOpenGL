@@ -29,6 +29,7 @@ private:
     void on_key_released(guint keyval, guint keycode, Gdk::ModifierType state);
     Glib::RefPtr<Gtk::EventControllerKey> keyEvents;
 
+    guint tickCallbackId{};
     bool timer_event(const Glib::RefPtr<Gdk::FrameClock>&);
 
     std::unique_ptr<Shader> renderingProgram;

@@ -94,13 +94,13 @@ void OpenGLRender::on_realize() {
     shader->set("pointLight.linear", 0.09f);
     shader->set("pointLight.quadratic", 0.032f);
 
-    tick_callback_id = add_tick_callback(sigc::mem_fun(*this, &OpenGLRender::timer_event));
+    tickCallbackId = add_tick_callback(sigc::mem_fun(*this, &OpenGLRender::timer_event));
 }
 
 void OpenGLRender::on_unrealize() {
+    remove_tick_callback(tickCallbackId);
     model.reset();
     shader.reset();
-    remove_tick_callback(tick_callback_id);
 
     Gtk::GLArea::on_unrealize();
 }

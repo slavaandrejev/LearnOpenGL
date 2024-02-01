@@ -195,7 +195,7 @@ void OpenGLRender::on_realize() {
     glEnableVertexArrayAttrib(lightCubeVAO, 0);
     glVertexArrayVertexBuffer(lightCubeVAO, 0, VBO, 0, 8 * sizeof(float));
 
-    add_tick_callback(sigc::mem_fun(*this, &OpenGLRender::timer_event));
+    tickCallbackId = add_tick_callback(sigc::mem_fun(*this, &OpenGLRender::timer_event));
 }
 
 void OpenGLRender::on_unrealize() {

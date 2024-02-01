@@ -39,6 +39,7 @@ private:
     bool on_scroll(double x, double y);
     Glib::RefPtr<Gtk::EventControllerScroll> scrollEvents;
 
+    guint tickCallbackId{};
     bool timer_event(const Glib::RefPtr<Gdk::FrameClock>&);
 
     std::unique_ptr<Shader> renderingProgram;
