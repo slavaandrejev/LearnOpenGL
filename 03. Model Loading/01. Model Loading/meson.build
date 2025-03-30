@@ -10,7 +10,7 @@ executable(
   , appwindow
   , 'render.cpp'
   , gtk_files
-  , include_directories: includeFolders
+  , include_directories: include_folders
   , dependencies : [
         assimp_dep
       , boost_dep

@@ -9,7 +9,7 @@ executable(
   , appwindow
   , 'render.cpp'
   , gtk_files
-  , include_directories: includeFolders
+  , include_directories: include_folders
   , dependencies : [fmt_dep, gtk_dep, epoxy_dep]
   , c_args: c_compiler_options
   , cpp_args: cpp_compiler_options

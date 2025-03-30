@@ -8,7 +8,7 @@ compiler = meson.get_compiler('c')
 
 project_folder = meson.current_source_dir()
 
-includeFolders = include_directories('include')
+include_folders = include_directories('include')
 
 compiler_definition = []
 cpp_compiler_options = []
