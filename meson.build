@@ -2,7 +2,11 @@ project(
     'LearnOpenGL'
   , ['c', 'cpp'] # we need C to compile GTK resources
   , version : '0.1'
-  , default_options: ['cpp_std=gnu++20', 'c_std=gnu2x'])
+  , default_options: {
+        'cpp_std': 'gnu++23'
+      , 'c_std':   'gnu18'
+      }
+  )
 
 compiler = meson.get_compiler('c')
 
@@ -10,23 +14,13 @@ project_folder = meson.current_source_dir()
 
 include_folders = include_directories('include')
 
-compiler_definition = []
-cpp_compiler_options = []
-c_compiler_options = []
-common_options = []
 if get_option('buildtype') == ('debug')
-    compiler_definition += ['-DDEBUG']
-else
-    compiler_definition += ['-DNDEBUG']
-    common_options = [
-        '-march=native'
-      , '-mtune=native'
-      ]
+    add_project_arguments('-DDEBUG', language: ['c', 'cpp'])
 endif
-
-c_compiler_options   += compiler_definition + common_options
-cpp_compiler_options += compiler_definition + common_options
-linker_options        = common_options + []
+if get_option('buildtype') == 'release' or get_option('buildtype') == 'debugoptimized'
+    add_project_arguments('-DNDEBUG', language: ['c', 'cpp'])
+endif
+add_project_arguments('-DGLM_ENABLE_EXPERIMENTAL', language: 'cpp')
 
 gnome = import('gnome')
 

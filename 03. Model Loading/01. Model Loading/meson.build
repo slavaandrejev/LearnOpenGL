@@ -19,7 +19,4 @@ executable(
       , glm_dep
       , gtk_dep
       ]
-  , c_args: c_compiler_options
-  , cpp_args: cpp_compiler_options
-  , link_args: linker_options
   )
