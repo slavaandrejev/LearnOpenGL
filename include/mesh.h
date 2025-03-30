@@ -40,12 +40,6 @@ public:
     Mesh(const Mesh &m) = delete;
     Mesh & operator=(const Mesh &) = delete;
 
-    Mesh(Mesh &&m) noexcept(
-        noexcept(std::declval<Mesh>() = std::declval<Mesh&&>()))
-    {
-        *this = std::move(m);
-    }
-
     Mesh & operator=(Mesh &&m) noexcept(
         noexcept(std::declval<std::vector<Vertex>>() = std::declval<std::vector<Vertex>&&>()) &&
         noexcept(std::declval<std::vector<GLuint>>() = std::declval<std::vector<GLuint>&&>()) &&
@@ -64,6 +58,12 @@ public:
         }
 
         return *this;
+    }
+
+    Mesh(Mesh &&m) noexcept(
+        noexcept(std::declval<Mesh>() = std::declval<Mesh&&>()))
+    {
+        *this = std::move(m);
     }
 
     ~Mesh() {

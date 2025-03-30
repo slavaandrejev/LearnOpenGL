@@ -62,6 +62,8 @@ private:
                 }
                 break;
             }
+            default:
+                break;
         }
         return aiReturn_FAILURE;
     }
