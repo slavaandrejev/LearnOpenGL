@@ -58,7 +58,7 @@ compile:
 ```
 $ meson compile -C build/debug
 ```
-Finally, you can run somethiing:
+Finally, you can run something:
 ```
 $ 'build/debug/02. Lighting/04. Lighting Maps/03. Exercises/003/ex-003.exe'
 ```
