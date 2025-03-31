@@ -14,8 +14,8 @@ executable(
   , dependencies : [
         assimp_dep
       , boost_dep
-      , epoxy_dep
       , fmt_dep
+      , glbinding_dep
       , glm_dep
       , gtk_dep
       ]

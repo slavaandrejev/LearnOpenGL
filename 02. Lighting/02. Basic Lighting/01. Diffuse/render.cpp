@@ -14,9 +14,13 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 
-#include <epoxy/gl.h>
+#include <glbinding/glbinding.h>
+#include <glbinding/gl/gl.h>
+#include <glbinding/getProcAddress.h>
 
 #include "render.h"
+
+using namespace gl;
 
 OpenGLRender::OpenGLRender(BaseObjectType* cobject,
                            const Glib::RefPtr<Gtk::Builder>& refBuilder)
@@ -26,6 +30,8 @@ OpenGLRender::OpenGLRender(BaseObjectType* cobject,
   , scrollEvents(Gtk::EventControllerScroll::create())
   , clickEvents(Gtk::GestureClick::create())
 {
+    glbinding::initialize(glbinding::getProcAddress, true);
+
     add_controller(keyEvents);
     keyEvents->signal_key_pressed().connect(sigc::mem_fun(*this, &OpenGLRender::on_key_pressed), true);
     keyEvents->signal_key_released().connect(sigc::mem_fun(*this, &OpenGLRender::on_key_released), true);
@@ -160,7 +166,7 @@ void OpenGLRender::on_realize() {
     glCreateVertexArrays(1, &lightCubeVAO);
     glCreateBuffers(1, &VBO);
 
-    glNamedBufferStorage(VBO, sizeof(vertices), &vertices[0], 0);
+    glNamedBufferStorage(VBO, sizeof(vertices), &vertices[0], GL_NONE_BIT);
 
     glVertexArrayAttribBinding(cubeVAO, 0, 0);
     glVertexArrayAttribFormat(cubeVAO, 0, 3, GL_FLOAT, GL_FALSE, 0);

@@ -11,8 +11,6 @@
 #include <gtkmm/gestureclick.h>
 #include <gtkmm/glarea.h>
 
-#include <epoxy/gl.h>
-
 #include <camera.h>
 #include <model.h>
 

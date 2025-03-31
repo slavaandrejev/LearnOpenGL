@@ -5,7 +5,9 @@
 #include <gtkmm/builder.h>
 #include <gtkmm/glarea.h>
 
-#include <epoxy/gl.h>
+#include <glbinding/glbinding.h>
+#include <glbinding/gl/gl.h>
+#include <glbinding/getProcAddress.h>
 
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
@@ -13,10 +15,14 @@
 
 #include "render.h"
 
+using namespace gl;
+
 OpenGLRender::OpenGLRender(BaseObjectType* cobject,
                            const Glib::RefPtr<Gtk::Builder>& refBuilder)
   : Gtk::GLArea(cobject)
-{}
+{
+    glbinding::initialize(glbinding::getProcAddress, true);
+}
 
 bool OpenGLRender::on_render(const Glib::RefPtr<Gdk::GLContext>& context) {
     const GLfloat color[] = {0.2f, 0.3f, 0.3f, 1.0f};
@@ -105,8 +111,8 @@ void OpenGLRender::on_realize() {
     glCreateBuffers(1, &VBO);
     glCreateBuffers(1, &EBO);
 
-    glNamedBufferStorage(VBO, sizeof(vertices), &vertices[0], 0);
-    glNamedBufferStorage(EBO, sizeof(indices), &indices[0], 0);
+    glNamedBufferStorage(VBO, sizeof(vertices), &vertices[0], GL_NONE_BIT);
+    glNamedBufferStorage(EBO, sizeof(indices), &indices[0], GL_NONE_BIT);
 
     glVertexArrayAttribBinding(VAO, 0, 0);
     glVertexArrayAttribFormat(VAO, 0, 3, GL_FLOAT, GL_FALSE, 0);

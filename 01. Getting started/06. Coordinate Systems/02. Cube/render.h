@@ -7,7 +7,7 @@
 #include <gtkmm/builder.h>
 #include <gtkmm/glarea.h>
 
-#include <epoxy/gl.h>
+#include <glbinding/gl/gl.h>
 
 #include <shader.h>
 
@@ -26,9 +26,9 @@ private:
 
     std::unique_ptr<Shader> renderingProgram;
 
-    GLuint VBO = {};
-    GLuint VAO = {};
-    GLuint texture[2] = {};
+    gl::GLuint VBO = {};
+    gl::GLuint VAO = {};
+    gl::GLuint texture[2] = {};
 
     gint64 startTime = -1;
     float  curTime   = -1.0f;

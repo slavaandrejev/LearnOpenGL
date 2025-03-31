@@ -10,5 +10,9 @@ executable(
   , 'render.cpp'
   , gtk_files
   , include_directories: include_folders
-  , dependencies : [fmt_dep, gtk_dep, epoxy_dep]
+  , dependencies : [
+        fmt_dep
+      , glbinding_dep
+      , gtk_dep
+      ]
   )

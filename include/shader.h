@@ -4,7 +4,7 @@
 
 #include <giomm/resource.h>
 
-#include <epoxy/gl.h>
+#include <glbinding/gl/gl.h>
 
 #include <boost/hana/functional/fix.hpp>
 
@@ -20,93 +20,93 @@ public:
     Shader(Args ...args) {
         namespace hana = boost::hana;
 
-        auto compileFromResource = [](auto path, auto shaderType) -> GLuint {
+        auto compileFromResource = [](auto path, auto shaderType) -> gl::GLuint {
             auto bytes = Gio::Resource::lookup_data_global(path);
             auto size = gsize{};
             auto data = reinterpret_cast<const char*>(bytes->get_data(size));
 
-            auto shader = glCreateShader(shaderType);
-            glShaderSource(shader, 1, &data, nullptr);
-            glCompileShader(shader);
+            auto shader = gl::glCreateShader(shaderType);
+            gl::glShaderSource(shader, 1, &data, nullptr);
+            gl::glCompileShader(shader);
             auto success = 0;
-            glGetShaderiv(shader, GL_COMPILE_STATUS, &success);
+            gl::glGetShaderiv(shader, gl::GL_COMPILE_STATUS, &success);
             if (0 == success) {
                 auto infoLength = 0;
-                glGetShaderiv(shader, GL_INFO_LOG_LENGTH, &infoLength);
-                auto info = std::vector<GLchar>(infoLength, 0);
-                glGetShaderInfoLog(shader, infoLength, nullptr, &info[0]);
+                gl::glGetShaderiv(shader, gl::GL_INFO_LOG_LENGTH, &infoLength);
+                auto info = std::vector<gl::GLchar>(infoLength, 0);
+                gl::glGetShaderInfoLog(shader, infoLength, nullptr, &info[0]);
                 fmt::print("{}\n", &info[0]);
             }
 
             return shader;
         };
 
-        auto shaders = std::vector<GLuint>{};
+        auto shaders = std::vector<gl::GLuint>{};
         auto attachShaders = hana::fix([&](auto attshdr, auto path, auto type, auto ...args) {
             auto shader = compileFromResource(path, type);
             shaders.push_back(shader);
-            glAttachShader(id, shader);
+            gl::glAttachShader(id, shader);
             if constexpr (0 < sizeof...(args)) {
                 attshdr(args...);
             }
         });
 
         attachShaders(args...);
-        glLinkProgram(id);
+        gl::glLinkProgram(id);
         auto success = 0;
-        glGetProgramiv(id, GL_LINK_STATUS, &success);
+        gl::glGetProgramiv(id, gl::GL_LINK_STATUS, &success);
         if (0 == success) {
             auto infoLength = 0;
-            glGetProgramiv(id, GL_INFO_LOG_LENGTH, &infoLength);
-            auto info = std::vector<GLchar>(infoLength, 0);
-            glGetProgramInfoLog(id, infoLength, nullptr, &info[0]);
+            gl::glGetProgramiv(id, gl::GL_INFO_LOG_LENGTH, &infoLength);
+            auto info = std::vector<gl::GLchar>(infoLength, 0);
+            gl::glGetProgramInfoLog(id, infoLength, nullptr, &info[0]);
             fmt::print("{}\n", &info[0]);
         }
         for (auto shader : shaders) {
-            glDeleteShader(shader);
+            gl::glDeleteShader(shader);
         }
     }
 
     ~Shader() {
-        glDeleteProgram(id);
+        gl::glDeleteProgram(id);
     }
 
     auto Id() const { return id; }
-    void use() { glUseProgram(id); }
+    void use() { gl::glUseProgram(id); }
     void set(const char *name, float v) {
-        glProgramUniform1f(id, glGetUniformLocation(id, name), v);
+        gl::glProgramUniform1f(id, gl::glGetUniformLocation(id, name), v);
     }
-    void set(const char *name, GLint v) {
-        glProgramUniform1i(id, glGetUniformLocation(id, name), v);
+    void set(const char *name, gl::GLint v) {
+        gl::glProgramUniform1i(id, gl::glGetUniformLocation(id, name), v);
     }
-    void set(const char *name, GLuint v) {
-        glProgramUniform1ui(id, glGetUniformLocation(id, name), v);
+    void set(const char *name, gl::GLuint v) {
+        gl::glProgramUniform1ui(id, gl::glGetUniformLocation(id, name), v);
     }
     void set(const char *name, const glm::vec3 &v) {
-        glProgramUniform3f(id, glGetUniformLocation(id, name), v[0], v[1], v[2]);
+        gl::glProgramUniform3f(id, gl::glGetUniformLocation(id, name), v[0], v[1], v[2]);
     }
     void set(const char *name, const glm::vec4 &v) {
-        glProgramUniform4f(id, glGetUniformLocation(id, name), v[0], v[1], v[2], v[3]);
+        gl::glProgramUniform4f(id, gl::glGetUniformLocation(id, name), v[0], v[1], v[2], v[3]);
     }
     void set(const char *name, const glm::mat3 &m) {
-        glProgramUniformMatrix3fv(id, glGetUniformLocation(id, name), 1, GL_FALSE, glm::value_ptr(m));
+        gl::glProgramUniformMatrix3fv(id, gl::glGetUniformLocation(id, name), 1, gl::GL_FALSE, glm::value_ptr(m));
     }
     void set(const char *name, const glm::mat4 &m) {
-        glProgramUniformMatrix4fv(id, glGetUniformLocation(id, name), 1, GL_FALSE, glm::value_ptr(m));
+        gl::glProgramUniformMatrix4fv(id, gl::glGetUniformLocation(id, name), 1, gl::GL_FALSE, glm::value_ptr(m));
     }
     void set(const char *array_name, size_t index, const char *const_name, float v) {
-        glProgramUniform1f(
+        gl::glProgramUniform1f(
             id
-          , glGetUniformLocation(
+          , gl::glGetUniformLocation(
                 id
               , fmt::format("{}[{}].{}", array_name, index, const_name).c_str()
               )
           , v);
     }
     void set(const char *array_name, size_t index, const char *const_name, const glm::vec3 &v) {
-        glProgramUniform3f(
+        gl::glProgramUniform3f(
             id
-          , glGetUniformLocation(
+          , gl::glGetUniformLocation(
                 id
               , fmt::format("{}[{}].{}", array_name, index, const_name).c_str()
               )
@@ -117,5 +117,5 @@ public:
     }
 
 private:
-    GLuint id = glCreateProgram();
+    gl::GLuint id = gl::glCreateProgram();
 };

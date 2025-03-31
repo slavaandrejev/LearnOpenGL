@@ -3,14 +3,20 @@
 #include <gtkmm/builder.h>
 #include <gtkmm/glarea.h>
 
-#include <epoxy/gl.h>
+#include <glbinding/glbinding.h>
+#include <glbinding/gl/gl.h>
+#include <glbinding/getProcAddress.h>
 
 #include "render.h"
+
+using namespace gl;
 
 OpenGLRender::OpenGLRender(BaseObjectType* cobject,
                            const Glib::RefPtr<Gtk::Builder>& refBuilder)
   : Gtk::GLArea(cobject)
-{}
+{
+    glbinding::initialize(glbinding::getProcAddress, true);
+}
 
 bool OpenGLRender::on_render(const Glib::RefPtr<Gdk::GLContext>& context) {
     const GLfloat color[] = {0.2f, 0.3f, 0.3f, 1.0f};

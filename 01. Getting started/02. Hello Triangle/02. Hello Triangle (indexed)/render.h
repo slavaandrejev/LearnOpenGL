@@ -4,7 +4,7 @@
 #include <gtkmm/builder.h>
 #include <gtkmm/glarea.h>
 
-#include <epoxy/gl.h>
+#include <glbinding/gl/gl.h>
 
 // First triangle using EBO.
 // Code: https://learnopengl.com/code_viewer_gh.php?code=src/1.getting_started/2.2.hello_triangle_indexed/hello_triangle_indexed.cpp
@@ -19,10 +19,10 @@ private:
     void on_realize() override;
     void on_unrealize() override;
 
-    GLuint CompileShaders();
+    gl::GLuint CompileShaders();
 
-    GLuint renderingProgram  = 0;
-    GLuint EBO = 0;
-    GLuint VBO = 0;
-    GLuint VAO = 0;
+    gl::GLuint renderingProgram  = 0;
+    gl::GLuint EBO = 0;
+    gl::GLuint VBO = 0;
+    gl::GLuint VAO = 0;
 };

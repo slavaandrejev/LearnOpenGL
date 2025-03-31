@@ -8,14 +8,20 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 
-#include <epoxy/gl.h>
+#include <glbinding/glbinding.h>
+#include <glbinding/gl/gl.h>
+#include <glbinding/getProcAddress.h>
 
 #include "render.h"
+
+using namespace gl;
 
 OpenGLRender::OpenGLRender(BaseObjectType* cobject,
                            const Glib::RefPtr<Gtk::Builder>& refBuilder)
   : Gtk::GLArea(cobject)
 {
+    glbinding::initialize(glbinding::getProcAddress, true);
+
     // note that after setting this property it's not necessary to call
     // glEnable(GL_DEPTH_TEST);
     set_has_depth_buffer();
@@ -161,7 +167,7 @@ void OpenGLRender::on_realize() {
     glCreateVertexArrays(1, &VAO);
     glCreateBuffers(1, &VBO);
 
-    glNamedBufferStorage(VBO, sizeof(vertices), &vertices[0], 0);
+    glNamedBufferStorage(VBO, sizeof(vertices), &vertices[0], GL_NONE_BIT);
 
     glVertexArrayAttribBinding(VAO, 0, 0);
     glVertexArrayAttribFormat(VAO, 0, 3, GL_FLOAT, GL_FALSE, 0);

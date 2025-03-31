@@ -12,7 +12,7 @@
 #include <gtkmm/gestureclick.h>
 #include <gtkmm/glarea.h>
 
-#include <epoxy/gl.h>
+#include <glbinding/gl/gl.h>
 
 #include <glm/glm.hpp>
 
@@ -43,10 +43,10 @@ private:
     std::unique_ptr<Shader> lightingShader;
     std::unique_ptr<Shader> lightCubeShader;
 
-    GLuint VBO = {};
-    GLuint cubeVAO = {};
-    GLuint lightCubeVAO = {};
-    GLuint diffuseMap = {};
+    gl::GLuint VBO = {};
+    gl::GLuint cubeVAO = {};
+    gl::GLuint lightCubeVAO = {};
+    gl::GLuint diffuseMap = {};
 
     glm::vec3 lightPos{1.2f, 1.0f, 2.0f};
 

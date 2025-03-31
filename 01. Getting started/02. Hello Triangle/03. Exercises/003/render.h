@@ -7,7 +7,7 @@
 #include <gtkmm/builder.h>
 #include <gtkmm/glarea.h>
 
-#include <epoxy/gl.h>
+#include <glbinding/gl/gl.h>
 
 #include <shader.h>
 
@@ -25,6 +25,6 @@ private:
 
     std::array<std::unique_ptr<Shader>, 2> renderingProgram;
 
-    GLuint VBO[2] = {};
-    GLuint VAO[2] = {};
+    gl::GLuint VBO[2] = {};
+    gl::GLuint VAO[2] = {};
 };

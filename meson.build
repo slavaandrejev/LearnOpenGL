@@ -24,12 +24,12 @@ add_project_arguments('-DGLM_ENABLE_EXPERIMENTAL', language: 'cpp')
 
 gnome = import('gnome')
 
-assimp_dep = dependency('assimp', method: 'cmake')
-boost_dep  = dependency('boost', modules: ['filesystem'])
-epoxy_dep  = dependency('epoxy')
-fmt_dep    = dependency('fmt', method: 'cmake')
-glm_dep    = dependency('glm', method: 'cmake')
-gtk_dep    = dependency('gtkmm-4.0')
+assimp_dep    = dependency('assimp', method: 'cmake')
+boost_dep     = dependency('boost', modules: ['filesystem'])
+fmt_dep       = dependency('fmt', method: 'cmake')
+glbinding_dep = dependency('glbinding', method: 'cmake')
+glm_dep       = dependency('glm', method: 'cmake')
+gtk_dep       = dependency('gtkmm-4.0')
 
 subdir('appwindow')
 

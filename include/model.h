@@ -66,7 +66,7 @@ private:
 
     Mesh ProcessMesh(aiMesh *mesh, const aiScene *scene) {
         auto vertices = std::vector<Vertex>{};
-        auto indices  = std::vector<GLuint>{};
+        auto indices  = std::vector<gl::GLuint>{};
         auto textures = std::vector<Texture>{};
 
         for (decltype(mesh->mNumVertices) i{}; mesh->mNumVertices > i; ++i) {
