@@ -94,22 +94,11 @@ class GResourceIO : public Assimp::IOSystem
     }
 
     AssimpLikeGStream * Open(const char *pFile, const char *pMode = "rb") override {
-        openFiles.push_back(AssimpLikeGStream{Gio::Resource::lookup_data_global(pFile), pFile});
+        auto stream = std::make_unique<AssimpLikeGStream>(Gio::Resource::lookup_data_global(pFile), pFile);
 
-        return &openFiles.back();
+        return stream.release();
     }
 
     void Close(Assimp::IOStream *pFile) override {
-        auto aiStrm = dynamic_cast<AssimpLikeGStream *>(pFile);
-        if (nullptr != aiStrm) {
-            auto it = std::find_if(openFiles.begin(), openFiles.end(), [&](auto &&f) {
-                return &f == aiStrm;
-            });
-            if (openFiles.end() != it) {
-                openFiles.erase(it);
-            }
-        }
     }
-
-    std::list<AssimpLikeGStream> openFiles;
 };
