@@ -127,7 +127,7 @@ private:
             if (textures_loaded.cend() == loaded) {
                 auto texture = Texture{
                     .id = LoadTextureFromPixbuf(
-                        *Gdk::Pixbuf::create_from_resource((directory / path.C_Str()).string())
+                        *Gdk::Pixbuf::create_from_resource((directory / path.C_Str()).generic_string())
                       )
                   , .type = std::string{typeName}
                   , .path = path.C_Str()
