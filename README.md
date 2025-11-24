@@ -17,15 +17,15 @@ The original code is licensed under the terms of the CC BY-NC 4.0 license.
 
 ## Instructions to build and run on Linux
 
-To build you need CMake, Meson, Boost, libepoxy, fmt, glm , and GTK 4 C++
+To build you need CMake, Meson, Boost, glbinding, fmt, glm , and GTK 4 C++
 bindings (gtkmm). You have to consult with your distro how to install them. For
 ArchLinux you can do this:
 ```
-$ sudo pacman -S cmake meson boost libepoxy fmt glm gtkmm-4.0
+$ sudo pacman -S cmake meson boost glbinding fmt glm gtkmm-4.0
 ```
 Then `cd` to where you cloned this repository and
 ```
-$ CC=gcc CXX=g++ meson setup --backend ninja --buildtype debug build/debug
+$ CC=gcc CXX=g++ meson setup --buildtype debug build/debug
 $ meson compile -C build/debug
 ```
 That's it.
@@ -45,13 +45,13 @@ $ pacman -S mingw-w64-ucrt-x86_64-gcc \
             mingw-w64-ucrt-x86_64-boost \
             mingw-w64-ucrt-x86_64-glm \
             mingw-w64-ucrt-x86_64-fmt \
-            mingw-w64-ucrt-x86_64-libepoxy \
+            mingw-w64-ucrt-x86_64-glbinding \
             mingw-w64-ucrt-x86_64-gtkmm-4.0
 ```
 Now change to the directory where you cloned this repository and issue the
 following command:
 ```
-$ CC=gcc CXX=g++ meson setup --backend ninja --buildtype debug build/debug
+$ CC=gcc CXX=g++ meson setup --buildtype debug build/debug
 ```
 This will make Meson to check if all dependencies are installed. Now we can
 compile:
