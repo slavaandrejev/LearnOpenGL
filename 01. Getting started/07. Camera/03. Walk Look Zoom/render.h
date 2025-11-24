@@ -15,9 +15,11 @@
 
 #include <glm/glm.hpp>
 
+#include <glboundglarea.h>
+
 #include <shader.h>
 
-class OpenGLRender : public Gtk::GLArea
+class OpenGLRender : public GlBoundGlArea
 {
 public:
     OpenGLRender(BaseObjectType* cobject,

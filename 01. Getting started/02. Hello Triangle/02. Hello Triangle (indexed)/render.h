@@ -6,10 +6,12 @@
 
 #include <glbinding/gl/gl.h>
 
+#include <glboundglarea.h>
+
 // First triangle using EBO.
 // Code: https://learnopengl.com/code_viewer_gh.php?code=src/1.getting_started/2.2.hello_triangle_indexed/hello_triangle_indexed.cpp
 // Text: https://learnopengl.com/Getting-started/Hello-Triangle
-class OpenGLRender : public Gtk::GLArea
+class OpenGLRender : public GlBoundGlArea
 {
 public:
     OpenGLRender(BaseObjectType* cobject,

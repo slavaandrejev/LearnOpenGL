@@ -8,9 +8,7 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 
-#include <glbinding/glbinding.h>
 #include <glbinding/gl/gl.h>
-#include <glbinding/getProcAddress.h>
 
 #include "render.h"
 
@@ -18,10 +16,8 @@ using namespace gl;
 
 OpenGLRender::OpenGLRender(BaseObjectType* cobject,
                            const Glib::RefPtr<Gtk::Builder>& refBuilder)
-  : Gtk::GLArea(cobject)
+  : GlBoundGlArea(cobject)
 {
-    glbinding::initialize(glbinding::getProcAddress, true);
-
     // note that after setting this property it's not necessary to call
     // glEnable(GL_DEPTH_TEST);
     set_has_depth_buffer();
@@ -69,8 +65,7 @@ bool OpenGLRender::on_render(const Glib::RefPtr<Gdk::GLContext>& context) {
 }
 
 void OpenGLRender::on_realize() {
-    Gtk::GLArea::on_realize();
-    make_current();
+    GlBoundGlArea::on_realize();
 
     glCreateTextures(GL_TEXTURE_2D, 2, &texture[0]);
 
@@ -186,5 +181,5 @@ void OpenGLRender::on_unrealize() {
     glDeleteTextures(2, &texture[0]);
     renderingProgram.reset();
 
-    Gtk::GLArea::on_unrealize();
+    GlBoundGlArea::on_unrealize();
 }

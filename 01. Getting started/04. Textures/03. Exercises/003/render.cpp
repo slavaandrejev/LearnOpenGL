@@ -6,9 +6,7 @@
 #include <gtkmm/eventcontrollerkey.h>
 #include <gtkmm/glarea.h>
 
-#include <glbinding/glbinding.h>
 #include <glbinding/gl/gl.h>
-#include <glbinding/getProcAddress.h>
 
 #include "render.h"
 
@@ -16,11 +14,9 @@ using namespace gl;
 
 OpenGLRender::OpenGLRender(BaseObjectType* cobject,
                            const Glib::RefPtr<Gtk::Builder>& refBuilder)
-  : Gtk::GLArea(cobject)
+  : GlBoundGlArea(cobject)
   , keyEvents(Gtk::EventControllerKey::create())
 {
-    glbinding::initialize(glbinding::getProcAddress, true);
-
     add_controller(keyEvents);
     keyEvents->signal_key_pressed().connect(sigc::mem_fun(*this, &OpenGLRender::on_key_pressed), true);
 }
@@ -40,8 +36,7 @@ bool OpenGLRender::on_render(const Glib::RefPtr<Gdk::GLContext>& context) {
 }
 
 void OpenGLRender::on_realize() {
-    Gtk::GLArea::on_realize();
-    make_current();
+    GlBoundGlArea::on_realize();
 
     glCreateTextures(GL_TEXTURE_2D, 2, &texture[0]);
 
@@ -128,7 +123,7 @@ void OpenGLRender::on_unrealize() {
     glDeleteTextures(2, &texture[0]);
     renderingProgram.reset();
 
-    Gtk::GLArea::on_unrealize();
+    GlBoundGlArea::on_unrealize();
 }
 
 bool OpenGLRender::on_key_pressed(guint keyval, guint keycode, Gdk::ModifierType state) {

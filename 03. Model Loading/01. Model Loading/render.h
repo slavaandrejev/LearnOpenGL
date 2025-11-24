@@ -11,10 +11,12 @@
 #include <gtkmm/gestureclick.h>
 #include <gtkmm/glarea.h>
 
+#include <glboundglarea.h>
+
 #include <camera.h>
 #include <model.h>
 
-class OpenGLRender : public Gtk::GLArea
+class OpenGLRender : public GlBoundGlArea
 {
 public:
     OpenGLRender(BaseObjectType* cobject,

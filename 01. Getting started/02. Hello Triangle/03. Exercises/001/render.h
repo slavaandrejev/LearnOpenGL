@@ -8,10 +8,12 @@
 
 #include <glbinding/gl/gl.h>
 
+#include <glboundglarea.h>
+
 #include <shader.h>
 
 // Two triangles next to each other.
-class OpenGLRender : public Gtk::GLArea
+class OpenGLRender : public GlBoundGlArea
 {
 public:
     OpenGLRender(BaseObjectType* cobject,
