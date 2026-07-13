@@ -1,8 +1,4 @@
-#include <giomm/resource.h>
-#include <glibmm/refptr.h>
-#include <gdkmm/frameclock.h>
-#include <gtkmm/builder.h>
-#include <gtkmm/glarea.h>
+#include <gtk/gtk.hpp>
 
 #include <glbinding/gl/gl.h>
 
@@ -10,12 +6,7 @@
 
 using namespace gl;
 
-OpenGLRender::OpenGLRender(BaseObjectType* cobject,
-                           const Glib::RefPtr<Gtk::Builder>& refBuilder)
-  : GlBoundGlArea(cobject)
-{}
-
-bool OpenGLRender::on_render(const Glib::RefPtr<Gdk::GLContext>& context) {
+bool OpenGLRender::render_(Gdk::GLContext context) noexcept {
     const GLfloat color[] = {0.2f, 0.3f, 0.3f, 1.0f};
     glClearBufferfv(GL_COLOR, 0, color);
 
@@ -29,8 +20,8 @@ bool OpenGLRender::on_render(const Glib::RefPtr<Gdk::GLContext>& context) {
     return true;
 }
 
-void OpenGLRender::on_realize() {
-    GlBoundGlArea::on_realize();
+void OpenGLRender::realize_() noexcept {
+    GlBoundGlArea::realize_();
 
     renderingProgram = std::make_unique<Shader>(
         "/vs.glsl", GL_VERTEX_SHADER,
@@ -51,24 +42,24 @@ void OpenGLRender::on_realize() {
     glVertexArrayAttribBinding(VAO, 0, 0);
     glEnableVertexArrayAttrib(VAO, 0);
 
-    tickCallbackId = add_tick_callback(sigc::mem_fun(*this, &OpenGLRender::timer_event));
+    tickCallbackId = add_tick_callback(gi::mem_fun(&OpenGLRender::timer_event, this));
 }
 
-void OpenGLRender::on_unrealize() {
+void OpenGLRender::unrealize_() noexcept {
     remove_tick_callback(tickCallbackId);
     glDeleteVertexArrays(1, &VAO);
     glDeleteBuffers(1, &VBO);
     renderingProgram.reset();
 
-    GlBoundGlArea::on_unrealize();
+    GlBoundGlArea::unrealize_();
 }
 
-bool OpenGLRender::timer_event(const Glib::RefPtr<Gdk::FrameClock>& frameClock) {
+bool OpenGLRender::timer_event(Gtk::Widget, Gdk::FrameClock frame_clock) {
     if (0 > startTime) {
-        startTime = frameClock->get_frame_time();
+        startTime = frame_clock.get_frame_time();
         curTime   = 0;
     } else {
-        curTime = 1e-6f * (frameClock->get_frame_time() - startTime);
+        curTime = 1e-6f * (frame_clock.get_frame_time() - startTime);
     }
     queue_draw();
 

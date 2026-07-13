@@ -1,20 +1,15 @@
 #pragma once
 
-#include <glibmm/refptr.h>
-#include <gtkmm/applicationwindow.h>
-#include <gtkmm/builder.h>
+#include <gtk/gtk.hpp>
+
+#include <gnamespaces.h>
 
 #include "render.h"
 
-class MainWindow : public Gtk::ApplicationWindow
+class MainWindow : public Gtk::impl::ApplicationWindowImpl
 {
 public:
-    MainWindow(BaseObjectType* cobject,
-               const Glib::RefPtr<Gtk::Builder>& refBuilder);
+    MainWindow(Gtk::ApplicationWindow cobj, Gtk::Builder builder);
 
-    static MainWindow* create();
-
-private:
-    Glib::RefPtr<Gtk::Builder> refBuilder;
-    OpenGLRender *glArea = nullptr;
+    static gi::ref_ptr<MainWindow> new_();
 };

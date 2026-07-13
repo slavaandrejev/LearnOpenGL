@@ -1,0 +1,2 @@
+GioWin32:.*:.*
+GLib:constructor:win32_new_stream_socket

@@ -8,7 +8,7 @@
             <object class="GtkBox" id="contentBox">
                 <property name="orientation">vertical</property>
                 <child>
-                    <object class="GtkGLArea" id="glArea">
+                    <object class="OpenGLRender" id="glArea">
                         <property name="auto-render">True</property>
                         <property name="hexpand">True</property>
                         <property name="vexpand">True</property>

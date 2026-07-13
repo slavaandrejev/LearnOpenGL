@@ -15,6 +15,6 @@ executable(
       , fmt_dep
       , glbinding_dep
       , glm_dep
-      , gtk_dep
+      , gigtk_dep
       ]
   )

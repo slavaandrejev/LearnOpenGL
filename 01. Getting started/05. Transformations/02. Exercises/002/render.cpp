@@ -1,9 +1,5 @@
-#include <gdkmm/frameclock.h>
-#include <gdkmm/pixbuf.h>
-#include <giomm/resource.h>
-#include <glibmm/refptr.h>
-#include <gtkmm/builder.h>
-#include <gtkmm/glarea.h>
+#include <gtk/gtk.hpp>
+#include <gdkpixbuf/gdkpixbuf.hpp>
 
 #include <glbinding/gl/gl.h>
 
@@ -15,12 +11,7 @@
 
 using namespace gl;
 
-OpenGLRender::OpenGLRender(BaseObjectType* cobject,
-                           const Glib::RefPtr<Gtk::Builder>& refBuilder)
-  : GlBoundGlArea(cobject)
-{}
-
-bool OpenGLRender::on_render(const Glib::RefPtr<Gdk::GLContext>& context) {
+bool OpenGLRender::render_(Gdk::GLContext context) noexcept {
     const GLfloat color[] = {0.2f, 0.3f, 0.3f, 1.0f};
     glClearBufferfv(GL_COLOR, 0, color);
 
@@ -43,48 +34,46 @@ bool OpenGLRender::on_render(const Glib::RefPtr<Gdk::GLContext>& context) {
     return true;
 }
 
-void OpenGLRender::on_realize() {
-    GlBoundGlArea::on_realize();
+void OpenGLRender::realize_() noexcept {
+    GlBoundGlArea::realize_();
 
     glCreateTextures(GL_TEXTURE_2D, 2, &texture[0]);
 
-    auto contImg = Gdk::Pixbuf::create_from_resource("/container.jpg");
+    auto contImg = Gdk::Pixbuf::new_from_resource("/container.jpg");
     glTextureParameteri(texture[0], GL_TEXTURE_WRAP_S, GL_REPEAT);
     glTextureParameteri(texture[0], GL_TEXTURE_WRAP_T, GL_REPEAT);
     glTextureParameteri(texture[0], GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
     glTextureParameteri(texture[0], GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-    glTextureStorage2D(texture[0], 1, GL_RGB8, contImg->get_width(), contImg->get_height());
+    glTextureStorage2D(texture[0], 1, GL_RGB8, contImg.get_width(), contImg.get_height());
     glTextureSubImage2D(
         texture[0]
       , 0
       , 0
       , 0
-      , contImg->get_width()
-      , contImg->get_height()
+      , contImg.get_width()
+      , contImg.get_height()
       , GL_RGB
       , GL_UNSIGNED_BYTE
-      , contImg->get_pixels());
+      , contImg.get_pixels().data());
     glGenerateTextureMipmap(texture[0]);
-    contImg.reset();
 
-    auto faceImg = Gdk::Pixbuf::create_from_resource("/awesomeface.png");
+    auto faceImg = Gdk::Pixbuf::new_from_resource("/awesomeface.png");
     glTextureParameteri(texture[1], GL_TEXTURE_WRAP_S, GL_REPEAT);
     glTextureParameteri(texture[1], GL_TEXTURE_WRAP_T, GL_REPEAT);
     glTextureParameteri(texture[1], GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
     glTextureParameteri(texture[1], GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-    glTextureStorage2D(texture[1], 1, GL_RGBA8, faceImg->get_width(), faceImg->get_height());
+    glTextureStorage2D(texture[1], 1, GL_RGBA8, faceImg.get_width(), faceImg.get_height());
     glTextureSubImage2D(
         texture[1]
       , 0
       , 0
       , 0
-      , faceImg->get_width()
-      , faceImg->get_height()
+      , faceImg.get_width()
+      , faceImg.get_height()
       , GL_RGBA
       , GL_UNSIGNED_BYTE
-      , faceImg->get_pixels());
+      , faceImg.get_pixels().data());
     glGenerateTextureMipmap(texture[1]);
-    faceImg.reset();
 
     renderingProgram = std::make_unique<Shader>(
         "/vs.glsl", GL_VERTEX_SHADER,
@@ -123,10 +112,10 @@ void OpenGLRender::on_realize() {
     glVertexArrayVertexBuffer(VAO, 0, VBO, 0, 5 * sizeof(float));
     glVertexArrayElementBuffer(VAO, EBO);
 
-    tickCallbackId = add_tick_callback(sigc::mem_fun(*this, &OpenGLRender::timer_event));
+    tickCallbackId = add_tick_callback(gi::mem_fun(&OpenGLRender::timer_event, this));
 }
 
-void OpenGLRender::on_unrealize() {
+void OpenGLRender::unrealize_() noexcept {
     remove_tick_callback(tickCallbackId);
     glDeleteVertexArrays(1, &VAO);
     glDeleteBuffers(1, &VBO);
@@ -134,15 +123,15 @@ void OpenGLRender::on_unrealize() {
     glDeleteTextures(2, &texture[0]);
     renderingProgram.reset();
 
-    GlBoundGlArea::on_unrealize();
+    GlBoundGlArea::unrealize_();
 }
 
-bool OpenGLRender::timer_event(const Glib::RefPtr<Gdk::FrameClock>& frameClock) {
+bool OpenGLRender::timer_event(Gtk::Widget, Gdk::FrameClock frame_clock) {
     if (0 > startTime) {
-        startTime = frameClock->get_frame_time();
+        startTime = frame_clock.get_frame_time();
         curTime   = 0;
     } else {
-        curTime = 1e-6f * (frameClock->get_frame_time() - startTime);
+        curTime = 1e-6f * (frame_clock.get_frame_time() - startTime);
     }
     queue_draw();
 

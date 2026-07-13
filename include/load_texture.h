@@ -2,12 +2,15 @@
 
 #include <string>
 
-#include <gdkmm/pixbuf.h>
+#include <gtk/gtk.hpp>
+#include <gdkpixbuf/gdkpixbuf.hpp>
 
 #include <glbinding/gl/gl.h>
 
+#include <gnamespaces.h>
+
 inline
-gl::GLuint LoadTextureFromPixbuf(const Gdk::Pixbuf &img) {
+gl::GLuint LoadTextureFromPixbuf(Gdk::Pixbuf img) {
     auto tex = gl::GLuint{};
 
     gl::glCreateTextures(gl::GL_TEXTURE_2D, 1, &tex);
@@ -44,7 +47,7 @@ gl::GLuint LoadTextureFromPixbuf(const Gdk::Pixbuf &img) {
       , img.get_height()
       , format
       , gl::GL_UNSIGNED_BYTE
-      , img.get_pixels());
+      , img.get_pixels().data());
       gl::glGenerateTextureMipmap(tex);
 
     return tex;

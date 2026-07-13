@@ -14,12 +14,14 @@
 
 #include <fmt/format.h>
 
-#include <gdkmm/pixbuf.h>
-#include <giomm/resource.h>
+#include <gtk/gtk.hpp>
+#include <gdkpixbuf/gdkpixbuf.hpp>
 
 #include <gresource_io.h>
 #include <load_texture.h>
 #include <mesh.h>
+
+#include <gnamespaces.h>
 
 class Model {
     using Path = boost::filesystem::path;
@@ -127,7 +129,7 @@ private:
             if (textures_loaded.cend() == loaded) {
                 auto texture = Texture{
                     .id = LoadTextureFromPixbuf(
-                        *Gdk::Pixbuf::create_from_resource((directory / path.C_Str()).generic_string())
+                        Gdk::Pixbuf::new_from_resource((directory / path.C_Str()).generic_string())
                       )
                   , .type = std::string{typeName}
                   , .path = path.C_Str()

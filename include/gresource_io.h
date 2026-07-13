@@ -6,13 +6,13 @@
 #include <assimp/IOStream.hpp>
 #include <assimp/IOSystem.hpp>
 
-#include <giomm/inputstream.h>
-#include <glibmm/refptr.h>
+#include <glib/glib.hpp>
+#include <gnamespaces.h>
 
 class AssimpLikeGStream : public Assimp::IOStream
 {
 public:
-    AssimpLikeGStream(const Glib::RefPtr<const Glib::Bytes> &bytes, std::string path)
+    AssimpLikeGStream(GLib::Bytes bytes, std::string path)
       : bytes(bytes)
       , path(std::move(path))
     {}
@@ -23,12 +23,11 @@ private:
             return 0;
         }
 
-        auto nLeft       = (bytes->get_size() - curPos) / pSize;
+        auto nLeft       = (bytes.get_size() - curPos) / pSize;
         auto countToRead = std::min(nLeft, pCount);
         if (0 != countToRead) {
             auto bytesToRead   = countToRead * pSize;
-            auto bytesReturned = bytes->get_size();
-            memcpy(pvBuffer, static_cast<const uint8_t *>(bytes->get_data(bytesReturned)) + curPos, bytesToRead);
+            memcpy(pvBuffer, static_cast<const uint8_t *>(bytes.get_data().data()) + curPos, bytesToRead);
             curPos += bytesToRead;
         }
 
@@ -42,22 +41,22 @@ private:
     aiReturn Seek(size_t pOffset, aiOrigin pOrigin) override {
         switch (pOrigin) {
             case aiOrigin_SET: {
-                if (bytes->get_size() > pOffset) {
+                if (bytes.get_size() > pOffset) {
                     curPos = pOffset;
                     return aiReturn_SUCCESS;
                 }
                 break;
             }
             case aiOrigin_CUR: {
-                if (bytes->get_size() > curPos + pOffset) {
+                if (bytes.get_size() > curPos + pOffset) {
                     curPos += pOffset;
                     return aiReturn_SUCCESS;
                 }
                 break;
             }
             case aiOrigin_END: {
-                if (bytes->get_size() > pOffset) {
-                    curPos = bytes->get_size() - (pOffset + 1);
+                if (bytes.get_size() > pOffset) {
+                    curPos = bytes.get_size() - (pOffset + 1);
                     return aiReturn_SUCCESS;
                 }
                 break;
@@ -73,20 +72,20 @@ private:
     }
 
     size_t FileSize() const override {
-        return bytes->get_size();
+        return const_cast<GLib::Bytes *>(&bytes)->get_size();
     }
 
     void Flush() override {}
 
-    Glib::RefPtr<const Glib::Bytes> bytes;
-    size_t                          curPos{};
-    std::string                     path;
+    GLib::Bytes bytes;
+    size_t      curPos{};
+    std::string path;
 };
 
 class GResourceIO : public Assimp::IOSystem
 {
     bool Exists(const char *pFile) const override {
-        return Gio::Resource::get_file_exists_global_nothrow(pFile);
+        return Gio::resources_get_info(pFile, Gio::ResourceLookupFlags::NONE_, nullptr, nullptr);
     }
 
     char getOsSeparator() const override {
@@ -94,7 +93,7 @@ class GResourceIO : public Assimp::IOSystem
     }
 
     AssimpLikeGStream * Open(const char *pFile, const char *pMode = "rb") override {
-        auto stream = std::make_unique<AssimpLikeGStream>(Gio::Resource::lookup_data_global(pFile), pFile);
+        auto stream = std::make_unique<AssimpLikeGStream>(Gio::resources_lookup_data(pFile, Gio::ResourceLookupFlags::NONE_), pFile);
 
         return stream.release();
     }

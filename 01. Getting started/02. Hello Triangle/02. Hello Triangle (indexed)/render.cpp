@@ -1,7 +1,4 @@
-#include <giomm/resource.h>
-#include <glibmm/refptr.h>
-#include <gtkmm/builder.h>
-#include <gtkmm/glarea.h>
+#include <gtk/gtk.hpp>
 
 #include <glbinding/gl/gl.h>
 
@@ -11,12 +8,7 @@
 
 using namespace gl;
 
-OpenGLRender::OpenGLRender(BaseObjectType* cobject,
-                           const Glib::RefPtr<Gtk::Builder>& refBuilder)
-  : GlBoundGlArea(cobject)
-{}
-
-bool OpenGLRender::on_render(const Glib::RefPtr<Gdk::GLContext>& context) {
+bool OpenGLRender::render_(Gdk::GLContext context) noexcept {
     const GLfloat color[] = {0.2f, 0.3f, 0.3f, 1.0f};
     glClearBufferfv(GL_COLOR, 0, color);
 
@@ -27,8 +19,8 @@ bool OpenGLRender::on_render(const Glib::RefPtr<Gdk::GLContext>& context) {
     return true;
 }
 
-void OpenGLRender::on_realize() {
-    GlBoundGlArea::on_realize();
+void OpenGLRender::realize_() noexcept {
+    GlBoundGlArea::realize_();
 
     renderingProgram = CompileShaders();
 
@@ -78,20 +70,19 @@ void OpenGLRender::on_realize() {
     // glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 }
 
-void OpenGLRender::on_unrealize() {
+void OpenGLRender::unrealize_() noexcept {
     glDeleteVertexArrays(1, &VAO);
     glDeleteBuffers(1, &VBO);
     glDeleteBuffers(1, &EBO);
     glDeleteProgram(renderingProgram);
 
-    GlBoundGlArea::on_unrealize();
+    GlBoundGlArea::unrealize_();
 }
 
 GLuint OpenGLRender::CompileShaders() {
     auto compileFromResource = [](auto path, auto shaderType) -> GLuint {
-        auto bytes = Gio::Resource::lookup_data_global(path);
-        auto size = gsize{};
-        auto data = reinterpret_cast<const char*>(bytes->get_data(size));
+        auto bytes = Gio::resources_lookup_data(path, Gio::ResourceLookupFlags::NONE_);
+        auto data = reinterpret_cast<const char*>(bytes.get_data().data());
 
         auto shader = glCreateShader(shaderType);
         glShaderSource(shader, 1, &data, nullptr);

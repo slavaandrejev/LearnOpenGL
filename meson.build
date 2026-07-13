@@ -21,6 +21,15 @@ if get_option('buildtype') == 'release' or get_option('buildtype') == 'debugopti
     add_project_arguments('-DNDEBUG', language: ['c', 'cpp'])
 endif
 add_project_arguments('-DGLM_ENABLE_EXPERIMENTAL', language: 'cpp')
+if 'windows' == host_machine.system()
+    # GObject Introspection errorneously includes `G_HAVE_GNUC_VISIBILITY` into
+    # `glib-2.0.c`, while this macro is not available on Windows.
+    add_project_arguments('-DG_HAVE_GNUC_VISIBILITY=0', language: ['c', 'cpp'])
+    # It just removes the compiler error, but doesn't help code that relies on
+    # `#if defined(G_HAVE_GNUC_VISIBILITY)`. In particular, it is used to define
+    # `G_GNUC_INTERNAL`. Remove the correspondent warning.
+    add_project_arguments('-Wno-attributes', language: ['c', 'cpp'])
+endif
 
 gnome = import('gnome')
 
@@ -29,9 +38,9 @@ boost_dep     = dependency('boost', modules: ['filesystem'])
 fmt_dep       = dependency('fmt', method: 'cmake')
 glbinding_dep = dependency('glbinding', method: 'cmake')
 glm_dep       = dependency('glm', method: 'cmake')
-gtk_dep       = dependency('gtkmm-4.0')
 
 subdir('appwindow')
+subdir('gi')
 
 subdir('01. Getting started')
 subdir('02. Lighting')

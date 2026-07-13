@@ -3,27 +3,31 @@
 #include <memory>
 #include <vector>
 
-#include <glibmm/refptr.h>
-#include <gtkmm/builder.h>
-#include <gtkmm/glarea.h>
+#include <gtk/gtk.hpp>
 
 #include <glbinding/gl/gl.h>
 
 #include <glm/glm.hpp>
 
 #include <glboundglarea.h>
-
+#include <gnamespaces.h>
 #include <shader.h>
 
 class OpenGLRender : public GlBoundGlArea
 {
+    friend struct WidgetClassDef::TypeInitData;
+    friend struct GLAreaClassDef::TypeInitData;
 public:
-    OpenGLRender(BaseObjectType* cobject,
-                 const Glib::RefPtr<Gtk::Builder>& refBuilder);
+    OpenGLRender(const InitData &id);
+
+    static GType get_type_() {
+        return register_type_<OpenGLRender>("OpenGLRender", 0, {}, {}, {});
+    }
+
 private:
-    bool on_render(const Glib::RefPtr<Gdk::GLContext>& context) override;
-    void on_realize() override;
-    void on_unrealize() override;
+    bool render_(Gdk::GLContext context) noexcept override;
+    void realize_() noexcept override;
+    void unrealize_() noexcept override;
 
     std::unique_ptr<Shader> renderingProgram;
 

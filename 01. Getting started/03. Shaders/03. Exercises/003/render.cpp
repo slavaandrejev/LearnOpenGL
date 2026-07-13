@@ -1,7 +1,4 @@
-#include <giomm/resource.h>
-#include <glibmm/refptr.h>
-#include <gtkmm/builder.h>
-#include <gtkmm/glarea.h>
+#include <gtk/gtk.hpp>
 
 #include <glbinding/gl/gl.h>
 
@@ -9,12 +6,7 @@
 
 using namespace gl;
 
-OpenGLRender::OpenGLRender(BaseObjectType* cobject,
-                           const Glib::RefPtr<Gtk::Builder>& refBuilder)
-  : GlBoundGlArea(cobject)
-{}
-
-bool OpenGLRender::on_render(const Glib::RefPtr<Gdk::GLContext>& context) {
+bool OpenGLRender::render_(Gdk::GLContext context) noexcept {
     const GLfloat color[] = {0.2f, 0.3f, 0.3f, 1.0f};
     glClearBufferfv(GL_COLOR, 0, color);
 
@@ -25,8 +17,8 @@ bool OpenGLRender::on_render(const Glib::RefPtr<Gdk::GLContext>& context) {
     return true;
 }
 
-void OpenGLRender::on_realize() {
-    GlBoundGlArea::on_realize();
+void OpenGLRender::realize_() noexcept {
+    GlBoundGlArea::realize_();
 
     renderingProgram = std::make_unique<Shader>(
         "/vs.glsl", GL_VERTEX_SHADER,
@@ -54,10 +46,10 @@ void OpenGLRender::on_realize() {
     glVertexArrayVertexBuffer(VAO, 0, VBO, 0, 6 * sizeof(float));
 }
 
-void OpenGLRender::on_unrealize() {
+void OpenGLRender::unrealize_() noexcept {
     glDeleteVertexArrays(1, &VAO);
     glDeleteBuffers(1, &VBO);
     renderingProgram.reset();
 
-    GlBoundGlArea::on_unrealize();
+    GlBoundGlArea::unrealize_();
 }

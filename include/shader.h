@@ -2,7 +2,7 @@
 
 #include <vector>
 
-#include <giomm/resource.h>
+#include <glib/glib.hpp>
 
 #include <glbinding/gl/gl.h>
 
@@ -19,11 +19,11 @@ public:
     template <typename ...Args>
     Shader(Args ...args) {
         namespace hana = boost::hana;
+        namespace Gio = Gio;
 
         auto compileFromResource = [](auto path, auto shaderType) -> gl::GLuint {
-            auto bytes = Gio::Resource::lookup_data_global(path);
-            auto size = gsize{};
-            auto data = reinterpret_cast<const char*>(bytes->get_data(size));
+            auto bytes = Gio::resources_lookup_data(path, Gio::ResourceLookupFlags::NONE_);
+            auto data = reinterpret_cast<const char*>(&bytes.get_data()[0]);
 
             auto shader = gl::glCreateShader(shaderType);
             gl::glShaderSource(shader, 1, &data, nullptr);

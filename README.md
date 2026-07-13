@@ -46,7 +46,8 @@ $ pacman -S mingw-w64-ucrt-x86_64-gcc \
             mingw-w64-ucrt-x86_64-glm \
             mingw-w64-ucrt-x86_64-fmt \
             mingw-w64-ucrt-x86_64-glbinding \
-            mingw-w64-ucrt-x86_64-gtkmm-4.0
+            mingw-w64-ucrt-x86_64-gtk-4.0 \
+            mingw-w64-ucrt-x86_64-gobject-introspection
 ```
 Now change to the directory where you cloned this repository and issue the
 following command:

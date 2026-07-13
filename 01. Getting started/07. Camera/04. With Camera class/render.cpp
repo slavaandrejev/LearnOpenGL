@@ -1,14 +1,5 @@
-#include <gdk/gdkkeysyms.h>
-#include <gdkmm/frameclock.h>
-#include <gdkmm/pixbuf.h>
-#include <giomm/resource.h>
-#include <glibmm/refptr.h>
-#include <gtkmm/builder.h>
-#include <gtkmm/eventcontrollerkey.h>
-#include <gtkmm/eventcontrollermotion.h>
-#include <gtkmm/eventcontrollerscroll.h>
-#include <gtkmm/gestureclick.h>
-#include <gtkmm/glarea.h>
+#include <gtk/gtk.hpp>
+#include <gdkpixbuf/gdkpixbuf.hpp>
 
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
@@ -20,20 +11,19 @@
 
 using namespace gl;
 
-OpenGLRender::OpenGLRender(BaseObjectType* cobject,
-                           const Glib::RefPtr<Gtk::Builder>& refBuilder)
-  : GlBoundGlArea(cobject)
-  , keyEvents(Gtk::EventControllerKey::create())
-  , mouseMoveEvents(Gtk::EventControllerMotion::create())
-  , scrollEvents(Gtk::EventControllerScroll::create())
-  , clickEvents(Gtk::GestureClick::create())
+OpenGLRender::OpenGLRender(const InitData &id)
+  : GlBoundGlArea(id, "OpenGLRender")
+  , keyEvents(Gtk::EventControllerKey::new_())
+  , mouseMoveEvents(Gtk::EventControllerMotion::new_())
+  , scrollEvents(Gtk::EventControllerScroll::new_(Gtk::EventControllerScrollFlags::VERTICAL_))
+  , clickEvents(Gtk::GestureClick::new_())
 {
     add_controller(keyEvents);
-    keyEvents->signal_key_pressed().connect(sigc::mem_fun(*this, &OpenGLRender::on_key_pressed), true);
-    keyEvents->signal_key_released().connect(sigc::mem_fun(*this, &OpenGLRender::on_key_released), true);
+    keyEvents.signal_key_pressed().connect(gi::mem_fun(&OpenGLRender::on_key_pressed, this));
+    keyEvents.signal_key_released().connect(gi::mem_fun(&OpenGLRender::on_key_released, this));
 
     add_controller(mouseMoveEvents);
-    mouseMoveEvents->signal_motion().connect([&](double x, double y) {
+    mouseMoveEvents.signal_motion().connect([&](Gtk::EventControllerMotion, gdouble x, gdouble y) {
         if (mouseGrabbed) {
             camera.OnPointerMotion(x, y);
             queue_draw();
@@ -41,25 +31,25 @@ OpenGLRender::OpenGLRender(BaseObjectType* cobject,
     });
 
     add_controller(scrollEvents);
-    scrollEvents->signal_scroll().connect([&](double x, double y) {
+    scrollEvents.signal_scroll().connect([&](Gtk::EventControllerScroll, gdouble x, gdouble y) {
         camera.OnScroll(y);
         queue_draw();
-
         return true;
-    }, true);
-    scrollEvents->set_flags(Gtk::EventControllerScroll::Flags::VERTICAL);
+    });
 
     add_controller(clickEvents);
-    clickEvents->signal_pressed().connect([&](int n, double x, double y) {
+    clickEvents.signal_pressed().connect([&](Gtk::GestureClick, int n, gdouble x, gdouble y) {
         camera.OnPointerEnter(x, y);
         mouseGrabbed = true;
+        return true;
     });
-    clickEvents->signal_released().connect([&](int n, double x, double y) {
+    clickEvents.signal_released().connect([&](Gtk::GestureClick, int n, gdouble x, gdouble y) {
         camera.OnPointerLeave();
         mouseGrabbed = false;
+        return true;
     });
 
-    set_has_depth_buffer();
+    set_has_depth_buffer(TRUE);
 
     cubePositions = {
         { 0.0f,  0.0f,   0.0f}
@@ -75,7 +65,7 @@ OpenGLRender::OpenGLRender(BaseObjectType* cobject,
       };
 }
 
-bool OpenGLRender::on_render(const Glib::RefPtr<Gdk::GLContext>& context) {
+bool OpenGLRender::render_(Gdk::GLContext context) noexcept {
     glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
@@ -107,48 +97,46 @@ bool OpenGLRender::on_render(const Glib::RefPtr<Gdk::GLContext>& context) {
     return true;
 }
 
-void OpenGLRender::on_realize() {
-    GlBoundGlArea::on_realize();
+void OpenGLRender::realize_() noexcept {
+    GlBoundGlArea::realize_();
 
     glCreateTextures(GL_TEXTURE_2D, 2, &texture[0]);
 
-    auto contImg = Gdk::Pixbuf::create_from_resource("/container.jpg");
+    auto contImg = Gdk::Pixbuf::new_from_resource("/container.jpg");
     glTextureParameteri(texture[0], GL_TEXTURE_WRAP_S, GL_REPEAT);
     glTextureParameteri(texture[0], GL_TEXTURE_WRAP_T, GL_REPEAT);
     glTextureParameteri(texture[0], GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
     glTextureParameteri(texture[0], GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-    glTextureStorage2D(texture[0], 1, GL_RGB8, contImg->get_width(), contImg->get_height());
+    glTextureStorage2D(texture[0], 1, GL_RGB8, contImg.get_width(), contImg.get_height());
     glTextureSubImage2D(
         texture[0]
       , 0
       , 0
       , 0
-      , contImg->get_width()
-      , contImg->get_height()
+      , contImg.get_width()
+      , contImg.get_height()
       , GL_RGB
       , GL_UNSIGNED_BYTE
-      , contImg->get_pixels());
+      , contImg.get_pixels().data());
     glGenerateTextureMipmap(texture[0]);
-    contImg.reset();
 
-    auto faceImg = Gdk::Pixbuf::create_from_resource("/awesomeface.png");
+    auto faceImg = Gdk::Pixbuf::new_from_resource("/awesomeface.png");
     glTextureParameteri(texture[1], GL_TEXTURE_WRAP_S, GL_REPEAT);
     glTextureParameteri(texture[1], GL_TEXTURE_WRAP_T, GL_REPEAT);
     glTextureParameteri(texture[1], GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
     glTextureParameteri(texture[1], GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-    glTextureStorage2D(texture[1], 1, GL_RGBA8, faceImg->get_width(), faceImg->get_height());
+    glTextureStorage2D(texture[1], 1, GL_RGBA8, faceImg.get_width(), faceImg.get_height());
     glTextureSubImage2D(
         texture[1]
       , 0
       , 0
       , 0
-      , faceImg->get_width()
-      , faceImg->get_height()
+      , faceImg.get_width()
+      , faceImg.get_height()
       , GL_RGBA
       , GL_UNSIGNED_BYTE
-      , faceImg->get_pixels());
+      , faceImg.get_pixels().data());
     glGenerateTextureMipmap(texture[1]);
-    faceImg.reset();
 
     renderingProgram = std::make_unique<Shader>(
         "/vs.glsl", GL_VERTEX_SHADER,
@@ -217,20 +205,20 @@ void OpenGLRender::on_realize() {
 
     glVertexArrayVertexBuffer(VAO, 0, VBO, 0, 5 * sizeof(float));
 
-    tickCallbackId = add_tick_callback(sigc::mem_fun(*this, &OpenGLRender::timer_event));
+    tickCallbackId = add_tick_callback(gi::mem_fun(&OpenGLRender::timer_event, this));
 }
 
-void OpenGLRender::on_unrealize() {
+void OpenGLRender::unrealize_() noexcept {
     remove_tick_callback(tickCallbackId);
     glDeleteVertexArrays(1, &VAO);
     glDeleteBuffers(1, &VBO);
     glDeleteTextures(2, &texture[0]);
     renderingProgram.reset();
 
-    GlBoundGlArea::on_unrealize();
+    GlBoundGlArea::unrealize_();
 }
 
-bool OpenGLRender::on_key_pressed(guint keyval, guint keycode, Gdk::ModifierType state) {
+bool OpenGLRender::on_key_pressed(Gtk::EventControllerKey, guint keyval, guint keycode, Gdk::ModifierType state) {
     auto processed = true;
     switch (keyval) {
         case GDK_KEY_w:
@@ -250,7 +238,7 @@ bool OpenGLRender::on_key_pressed(guint keyval, guint keycode, Gdk::ModifierType
     return processed;
 }
 
-void OpenGLRender::on_key_released(guint keyval, guint keycode, Gdk::ModifierType state) {
+void OpenGLRender::on_key_released(Gtk::EventControllerKey, guint keyval, guint keycode, Gdk::ModifierType state) {
     switch (keyval) {
         case GDK_KEY_w:
         case GDK_KEY_W:         { camera.StopForward(); break; }
@@ -266,20 +254,20 @@ void OpenGLRender::on_key_released(guint keyval, guint keycode, Gdk::ModifierTyp
     }
 }
 
-bool OpenGLRender::timer_event(const Glib::RefPtr<Gdk::FrameClock>& frameClock) {
+bool OpenGLRender::timer_event(Gtk::Widget, Gdk::FrameClock frame_clock) {
     if (0 > startTime) {
-        startTime = frameClock->get_frame_time();
+        startTime = frame_clock.get_frame_time();
         curTime   = 0;
     } else {
-        auto frameTime = frameClock->get_frame_time();
+        auto frameTime = frame_clock.get_frame_time();
         curTime = 1e-6f * (frameTime - startTime);
 
-        auto frame = frameClock->get_frame_counter();
-        auto historyStart = frameClock->get_history_start();
+        auto frame = frame_clock.get_frame_counter();
+        auto historyStart = frame_clock.get_history_start();
         auto histLen = frame - historyStart;
         if (0 < histLen) {
-            auto prevTimings = frameClock->get_timings(frame - histLen);
-            auto prevTime = prevTimings->get_frame_time();
+            auto prevTimings = frame_clock.get_timings(frame - histLen);
+            auto prevTime = prevTimings.get_frame_time();
             auto deltaTime = 1e-6f * (frameTime - prevTime);
             if (camera.IsMoving()) {
                 camera.TimeTick(deltaTime);

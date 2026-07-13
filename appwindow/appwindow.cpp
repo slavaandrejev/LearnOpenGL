@@ -1,20 +1,19 @@
-#include <glibmm/refptr.h>
+#include <gtk/gtk.hpp>
 
 #include "appwindow.h"
 
-MainWindow::MainWindow(BaseObjectType* cobject,
-                       const Glib::RefPtr<Gtk::Builder>& refBuilder)
-  : Gtk::ApplicationWindow(cobject)
-  , refBuilder(refBuilder)
-{
-    glArea = Gtk::Builder::get_widget_derived<OpenGLRender>(refBuilder, "glArea");
-}
+MainWindow::MainWindow(Gtk::ApplicationWindow cobj, Gtk::Builder builder)
+  : Gtk::impl::ApplicationWindowImpl(cobj, this)
+{}
 
-MainWindow* MainWindow::create() {
-    auto refBuilder = Gtk::Builder::create_from_resource("/appwindow.ui");
-    auto window     = Gtk::Builder::get_widget_derived<MainWindow>(refBuilder, "mainWindow");
+gi::ref_ptr<MainWindow> MainWindow::new_() {
+    auto builder = Gtk::Builder::new_();
+    gi::register_type<OpenGLRender>();
+    if (builder.add_from_resource("/appwindow.ui")) {
+        return builder.get_object_derived<MainWindow>("mainWindow");
+    }
     // GTK has excellent error reporting infrastructure. There is no need to
     // check for errors here. GTK will throw an exception with the text
     // even sometimes translated to your language.
-    return window;
+    return gi::ref_ptr<MainWindow>();
 }
