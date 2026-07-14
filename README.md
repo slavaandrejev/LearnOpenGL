@@ -5,8 +5,9 @@ OpenGL](https://learnopengl.com) book by Joey de Vries. The original code is
 available [here](https://github.com/JoeyDeVries/LearnOpenGL). The goal was to
 integrate the OpenGL code in a more powerful GUI framework, and rewrite using
 more contemporary DSA syntax for OpenGL. The project uses GTK 4 with C++
-bindings (gtkmm). Old OpenGL syntax was left as is in the first example, but
-the DSA starts on from the first exercise.
+bindings (via [GObject Introspection](https://gi.readthedocs.io/en/latest/)).
+Old OpenGL syntax was left as is in the first example, but the DSA starts from
+the first exercise.
 
 In each example or exercise, `render.cpp` contains the code relevant to OpenGL
 and has just a minimum of the matter related to the GUI framework boilerplate.
@@ -17,11 +18,12 @@ The original code is licensed under the terms of the CC BY-NC 4.0 license.
 
 ## Instructions to build and run on Linux
 
-To build you need CMake, Meson, Boost, glbinding, fmt, glm , and GTK 4 C++
-bindings (gtkmm). You have to consult with your distro how to install them. For
-ArchLinux you can do this:
+To build, you need CMake, Meson, Boost, glbinding, fmt, glm, GTK 4, and GTK 4
+C++ bindings (provided by [cppgir](https://gitlab.com/mnauw/cppgir) via [GObject
+Introspection](https://gi.readthedocs.io/en/latest/)). You have to consult with
+your distro how to install them. For Arch Linux you can do this:
 ```
-$ sudo pacman -S cmake meson boost glbinding fmt glm gtkmm-4.0
+$ sudo pacman -S cmake meson boost glbinding fmt glm gtk4
 ```
 Then `cd` to where you cloned this repository and
 ```
@@ -35,9 +37,9 @@ That's it.
 Download and install MSYS2 following [these
 instructions](https://www.msys2.org/). MSYS2 gives you several options for the
 [environment](https://www.msys2.org/docs/environments/) to run. The following
-instructions assume UCRT environment, you have to click the correspondent link
-installed by MSYS2 to open it. Then, from there, first, install the necessary
-packages:
+instructions assume the UCRT environment; you have to click the corresponding
+link installed by MSYS2 to open it. Then, from there, first, install the
+necessary packages:
 ```
 $ pacman -S mingw-w64-ucrt-x86_64-gcc \
             mingw-w64-ucrt-x86_64-meson \
